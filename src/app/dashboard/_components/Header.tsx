@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import Image from "next/image";
 import React from "react";
@@ -30,8 +31,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { usePathname } from "next/navigation";
 
 const Header = () => {
+  const pathname = usePathname();
   return (
     <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
       <Sheet>
@@ -51,36 +54,56 @@ const Header = () => {
               <span className="sr-only">Acme Inc</span>
             </Link>
             <Link
-              href="#"
-              className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
+              href="/dashboard"
+              className={`flex items-center gap-4 px-2.5  hover:text-foreground ${
+                pathname === "/dashboard"
+                  ? "text-foreground"
+                  : "text-muted-foreground"
+              }`}
             >
               <LuHome className="h-5 w-5" />
               Dashboard
             </Link>
             <Link
-              href="#"
-              className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
+              href="/dashboard/servers"
+              className={`flex items-center gap-4 px-2.5 hover:text-foreground ${
+                pathname === "/dashboard/servers"
+                  ? "text-foreground"
+                  : "text-muted-foreground"
+              }`}
             >
               <LuServer className="h-5 w-5" />
               Servers
             </Link>
             <Link
-              href="#"
-              className="flex items-center gap-4 px-2.5 text-foreground"
+              href="/dashboard/products"
+              className={`flex items-center gap-4 px-2.5  hover:text-foreground ${
+                pathname === "/dashboard/products"
+                  ? "text-foreground"
+                  : "text-muted-foreground"
+              }`}
             >
               <LuPackage className="h-5 w-5" />
               Products
             </Link>
             <Link
-              href="#"
-              className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
+              href="/dashboard/customers"
+              className={`flex items-center gap-4 px-2.5  hover:text-foreground ${
+                pathname === "/dashboard/customers"
+                  ? "text-foreground"
+                  : "text-muted-foreground"
+              }`}
             >
               <LuUsers2 className="h-5 w-5" />
               Customers
             </Link>
             <Link
-              href="#"
-              className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
+              href="/dashboard/settings"
+              className={`flex items-center gap-4 px-2.5  hover:text-foreground ${
+                pathname === "/dashboard/settings"
+                  ? "text-foreground"
+                  : "text-muted-foreground"
+              }`}
             >
               <LuLineChart className="h-5 w-5" />
               Settings
@@ -92,7 +115,7 @@ const Header = () => {
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
-              <Link href="/">Dashboard</Link>
+              <Link href="/dashboard">Dashboard</Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
