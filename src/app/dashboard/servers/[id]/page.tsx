@@ -10,19 +10,19 @@ import {
   LuChevronRight,
   LuCopy,
   LuCreditCard,
-  File,
-  Home,
-  LineChart,
-  ListFilter,
+  //   File,
+  //   Home,
+  //   LineChart,
+  //   ListFilter,
   LuMoreVertical,
-  Package,
-  Package2,
-  PanelLeft,
-  Search,
-  Settings,
-  ShoppingCart,
-  LuTruck,
-  Users2,
+  //   Package,
+  //   Package2,
+  //   PanelLeft,
+  //   Search,
+  //   Settings,
+  //   ShoppingCart,
+  //   LuTruck,
+  //   Users2,
 } from "react-icons/lu";
 
 import {
@@ -34,7 +34,6 @@ import {
   RiLockPasswordLine,
   RiPlayCircleLine,
 } from "react-icons/ri";
-import { Badge } from "@/components/ui/badge";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -76,47 +75,59 @@ import {
 const ServerControls = ({ server }: { server: (typeof data)[0] }) => {
   return (
     <div className="grid grid-cols-3 md:grid-cols-6  gap-4 text-nowrap">
-      <div className="relative col-span-3 h-36 bg-white dark:bg-dark shadow-md rounded-lg p-3 flex flex-col items-center justify-end font-bold cursor-pointer">
-        <span
-          className={`absolute top-4 end-4 h-3 w-3 rounded-full ${
-            server.online ? "bg-green-500" : "bg-red-500"
-          }`}
-        ></span>
+      <Card className="col-span-3">
+        <CardContent className="relative  h-36  p-3 flex flex-col items-center justify-end font-bold ">
+          <span
+            className={`absolute top-4 end-4 h-3 w-3 rounded-full ${
+              server.online ? "bg-green-500" : "bg-red-500"
+            }`}
+          ></span>
 
-        {server.online ? (
-          <>
-            <RiStopCircleLine className="w-24 h-24 text-black opacity-40" />
-            <span>Stop</span>
-          </>
-        ) : (
-          <>
-            <RiPlayCircleLine className="w-24 h-24 text-black opacity-40" />
-            <span>Start</span>
-          </>
-        )}
-      </div>
-      <div className="col-span-2 h-36 bg-white dark:bg-dark shadow-md rounded-lg p-3 flex flex-col items-center justify-end font-bold cursor-pointer">
-        <RiUploadCloudLine className="w-24 h-24 text-black opacity-40" />
-        <span>Backup</span>
-      </div>
-      <div className="h-36 bg-white dark:bg-dark shadow-md rounded-lg p-3 flex flex-col items-center justify-end font-bold cursor-pointer">
-        <RiInstallLine className="w-24 h-24 text-black opacity-40" />
-        <span>Reinstall</span>
-      </div>
+          {server.online ? (
+            <>
+              <RiStopCircleLine className="w-24 h-24 dark:text-blue-400 opacity-50" />
+              <span>Stop</span>
+            </>
+          ) : (
+            <>
+              <RiPlayCircleLine className="w-24 h-24 dark:text-blue-400 opacity-50" />
+              <span>Start</span>
+            </>
+          )}
+        </CardContent>
+      </Card>
+      <Card className="col-span-2">
+        <CardContent className=" h-36  p-3 flex flex-col items-center justify-end font-bold ">
+          <RiUploadCloudLine className="w-24 h-24 dark:text-blue-400 opacity-50" />
+          <span>Backup</span>
+        </CardContent>
+      </Card>
+      <Card className="">
+        <CardContent className="h-36  p-3 flex flex-col items-center justify-end font-bold ">
+          <RiInstallLine className="w-24 h-24 dark:text-blue-400 opacity-50" />
+          <span>Reinstall</span>
+        </CardContent>
+      </Card>
 
-      <div className="col-span-full md:col-span-2 h-36 bg-white dark:bg-dark shadow-md rounded-lg p-3 flex flex-col items-center justify-end font-bold cursor-pointer">
-        <RiShutDownLine className="w-24 h-24 text-black opacity-40" />
-        <span>Shut Down</span>
-      </div>
-      <div className="col-span-full md:col-span-2 h-36 bg-white dark:bg-dark shadow-md rounded-lg p-3 flex flex-col items-center justify-end font-bold cursor-pointer">
-        <RiRestartLine className="w-24 h-24 text-black opacity-40" />
-        <span>Restart</span>
-      </div>
+      <Card className="col-span-full md:col-span-2">
+        <CardContent className="h-36  p-3 flex flex-col items-center justify-end font-bold ">
+          <RiShutDownLine className="w-24 h-24 dark:text-blue-400 opacity-50" />
+          <span>Shut Down</span>
+        </CardContent>
+      </Card>
+      <Card className="col-span-full md:col-span-2">
+        <CardContent className="h-36  p-3 flex flex-col items-center justify-end font-bold ">
+          <RiRestartLine className="w-24 h-24 dark:text-blue-400 opacity-50" />
+          <span>Restart</span>
+        </CardContent>
+      </Card>
 
-      <div className="col-span-full md:col-span-2 h-36 bg-white dark:bg-dark shadow-md rounded-lg p-3 flex flex-col items-center justify-end font-bold cursor-pointer">
-        <RiLockPasswordLine className="w-24 h-24 text-black opacity-40" />
-        <span>Change Password</span>
-      </div>
+      <Card className="col-span-full md:col-span-2">
+        <CardContent className="h-36  p-3 flex flex-col items-center justify-end font-bold ">
+          <RiLockPasswordLine className="w-24 h-24 dark:text-blue-400 opacity-50" />
+          <span>Change Password</span>
+        </CardContent>
+      </Card>
     </div>
   );
 };
@@ -342,87 +353,69 @@ const ServerPage = ({ params }: { params: { id: string } }) => {
           <h2 className="mb-4">Server {params.id}</h2>
 
           {/* percentages */}
-          <div className="mb-6 grid md:grid-cols-2 xl:grid-cols-4 gap-6 ">
-            {/* cpu */}
-            <Card>
-              <CardContent className="relative overflow-hidden  text-center ">
-                <LuCpu className=" absolute -bottom-5 -left-5 rotate-12 opacity-5 dark:opacity-15 w-36 h-36 text-primary dark:text-primary " />
-
-                <CardTitle className="mt-8 text-nowrap text-2xl font-bold">
-                  80%
-                </CardTitle>
-                <h5 className="mt-2">CPU</h5>
-                <p className="text-sm">
+          <div className="mb-6 grid md:grid-cols-2 xl:grid-cols-3 gap-4 ">
+            <Card className="relative overflow-hidden">
+              <LuCpu className=" absolute -bottom-5 -left-5 rotate-12 opacity-20 dark:opacity-25 w-36 h-36 text-blue-500 " />
+              <CardHeader className="pb-2">
+                <CardDescription>CPU Usage</CardDescription>
+                <CardTitle className="text-4xl">{server.cpu_pc}%</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-xs text-muted-foreground">
                   {server.cpu_pc >= 80 ? (
                     <span className="text-red-400 font-bold">High Usage</span>
                   ) : (
                     "Normal Usage"
                   )}
-                </p>
+                </div>
               </CardContent>
+              <CardFooter>
+                <Progress value={server.cpu_pc} />
+              </CardFooter>
             </Card>
-
-            {/* memory */}
-            <Card>
-              <CardContent className="relative overflow-hidden  text-center">
-                <LuMemoryStick className=" absolute -bottom-5 -left-5 rotate-12 opacity-5 dark:opacity-15 w-36 h-36 text-primary dark:text-primary transition-all " />
-                <CardTitle className="mt-8 text-nowrap text-2xl font-bold">
-                  {Math.floor(server.curr_memory / 1024)}GB /
-                  <span className="text-xl">
-                    {Math.floor(server.memory / 1024)}GB
-                  </span>
+            <Card className="relative overflow-hidden">
+              <CardHeader className="pb-2">
+                <LuMemoryStick className=" absolute -bottom-5 -left-5 rotate-12 opacity-20 dark:opacity-25 w-36 h-36 text-blue-500 transition-all " />
+                <CardDescription>Memory Usage</CardDescription>
+                <CardTitle className="text-4xl">
+                  {Math.floor(server.curr_memory / 1024)}GB/
+                  {Math.floor(server.memory / 1024)}GB
                 </CardTitle>
-                <h5 className="mt-2">Memory Usage</h5>
-                <p className="text-sm">
+              </CardHeader>
+              <CardContent>
+                <div className="text-xs text-muted-foreground">
                   {(server.curr_memory / server.memory) * 100 >= 80 ? (
                     <span className="text-red-400 font-bold">High Usage</span>
                   ) : (
                     "Normal Usage"
                   )}
-                </p>
+                </div>
               </CardContent>
+              <CardFooter>
+                <Progress value={(server.curr_memory / server.memory) * 100} />
+              </CardFooter>
             </Card>
-
-            {/* disk space */}
-            <Card>
-              <CardContent className="relative overflow-hidden  text-center">
-                <LuDatabase className=" absolute -bottom-5 -left-5 rotate-12 opacity-5 dark:opacity-15 w-36 h-36 text-primary dark:text-primary transition-all " />
-                <CardTitle className="mt-8 text-nowrap text-2xl font-bold">
-                  {Math.floor(server.disk_used)}GB /
-                  <span className="text-xl">
-                    {Math.floor(server.disk_size)}GB
-                  </span>
+            <Card className="relative overflow-hidden">
+              <LuDatabase className=" absolute -bottom-5 -left-5 rotate-12 opacity-20 dark:opacity-25 w-36 h-36 text-blue-500 transition-all " />
+              <CardHeader className="pb-2">
+                <CardDescription>Disk Usage</CardDescription>
+                <CardTitle className="text-4xl">
+                  {Math.floor(server.disk_used)}GB/
+                  {Math.floor(server.disk_size)}GB
                 </CardTitle>
-                <h5 className="mt-2">Disk Usage</h5>
-                <p className="text-sm">
+              </CardHeader>
+              <CardContent>
+                <div className="text-xs text-muted-foreground">
                   {(server.disk_used / server.disk_size) * 100 >= 80 ? (
                     <span className="text-red-400 font-bold">High Usage</span>
                   ) : (
                     "Normal Usage"
                   )}
-                </p>
+                </div>
               </CardContent>
-            </Card>
-
-            {/* traffic */}
-            <Card>
-              <CardContent className="relative overflow-hidden  text-center">
-                <LuLineChart className=" absolute -bottom-5 -left-5 rotate-12 opacity-5 dark:opacity-15 w-36 h-36 text-primary dark:text-primary transition-all " />
-                <CardTitle className="mt-8 text-nowrap text-2xl font-bold">
-                  {Math.floor(server.curr_traffic)}GB /
-                  <span className="text-xl">
-                    {Math.floor(server.traffic)}GB
-                  </span>
-                </CardTitle>
-                <h5 className="mt-2">Traffic</h5>
-                <p className="text-sm">
-                  {(server.curr_traffic / server.traffic) * 100 >= 80 ? (
-                    <span className="text-red-400 font-bold">High Usage</span>
-                  ) : (
-                    "Normal Usage"
-                  )}
-                </p>
-              </CardContent>
+              <CardFooter>
+                <Progress value={(server.disk_used / server.disk_size) * 100} />
+              </CardFooter>
             </Card>
           </div>
 
