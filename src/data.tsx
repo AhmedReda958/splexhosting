@@ -1,0 +1,77 @@
+const data = [
+  {
+    id: 0,
+    service_id: 0,
+    service_ordered_at: 0,
+    expire_at: 0,
+    expired_at: 0,
+    product_name: "string",
+    cores: 12,
+    memory: 49152,
+    disk_size: 100,
+    disk_used: 50,
+    installed: true,
+    traffic: 1000,
+    curr_traffic: 273,
+    online: true,
+    cpu_pc: 27,
+    curr_memory: 0,
+    addresses: [
+      {
+        ip: "123.123.123.123",
+        rdns: "123.123.123.123.mydomain.tld",
+      },
+    ],
+  },
+  {
+    id: 1,
+    service_id: 1,
+    service_ordered_at: 1,
+    expire_at: 1,
+    expired_at: 1,
+    product_name: "string",
+    cores: 12,
+    memory: 49152,
+    disk_size: 350,
+    disk_used: 53,
+    installed: true,
+    traffic: 1000,
+    curr_traffic: 273,
+    online: true,
+    cpu_pc: 80,
+    curr_memory: 20000,
+    addresses: [
+      {
+        ip: "123.123.123.123",
+        rdns: "123.123.123.123.mydomain.tld",
+      },
+    ],
+  },
+
+  {
+    id: 2,
+    service_id: 2,
+    service_ordered_at: 2,
+    expire_at: 2,
+    expired_at: 2,
+    product_name: "string",
+    cores: 12,
+    memory: 49152,
+    disk_size: 100,
+    disk_used: 50,
+    installed: true,
+    traffic: 1000,
+    curr_traffic: 273,
+    online: false,
+    cpu_pc: 0,
+    curr_memory: 0,
+    addresses: [
+      {
+        ip: "123.123.123.123",
+        rdns: "123.123.123.123.mydomain.tld",
+      },
+    ],
+  },
+];
+
+export default data;
