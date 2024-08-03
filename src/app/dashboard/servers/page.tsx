@@ -6,7 +6,7 @@ import data from "@/data";
 const ServerCard: React.FC<{ server: (typeof data)[0] }> = ({ server }) => {
   return (
     <Link href={`servers/${server.id}`}>
-      <div className="p-4 bg-white dark:bg-dark shadow-md rounded-lg flex gap-6">
+      <div className="p-4 bg-white dark:bg-primary shadow-md rounded-lg flex gap-6">
         <div className="flex-shrink-0">
           {server.online ? (
             <LuServer className="w-16 h-16 text-green-600 dark:text-green-400 " />

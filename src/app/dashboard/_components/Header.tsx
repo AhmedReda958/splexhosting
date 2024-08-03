@@ -32,6 +32,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { usePathname } from "next/navigation";
+import DarkModeToggle from "@/components/DarkModeToggle";
 
 const Header = () => {
   const pathname = usePathname();
@@ -132,6 +133,7 @@ const Header = () => {
           className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]"
         />
       </div>
+      <DarkModeToggle />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
