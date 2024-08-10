@@ -1,13 +1,14 @@
+import { getServerSession } from "next-auth";
 import Header from "./_components/Header";
 import Sidebar from "./_components/Sidebar";
-import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
 
 async function Dashboard({ children }: { children: React.ReactNode }) {
+  // redirect if user role is not admin
   const session = await getServerSession(authOptions);
-  if (session?.user?.role == "admin") {
-    redirect("/admin-dashboard");
+  if (session?.user?.role !== "admin") {
+    redirect("/dashboard");
   }
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
