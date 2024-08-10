@@ -1,3 +1,4 @@
+import DarkModeToggle from "@/components/DarkModeToggle";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
@@ -12,6 +13,7 @@ function AuthLayout({ children }: { children: React.ReactNode }) {
           SplexHosting
         </div>
         {/* <Button as={Link}>home</Button> */}
+        <DarkModeToggle />
       </div>
       {children}
     </div>

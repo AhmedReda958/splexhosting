@@ -35,7 +35,7 @@ const SignIn = () => {
     if (result?.error) {
       setError(result.error);
     } else if (result?.ok) {
-      router.push("/"); // Redirect to homepage or any protected page
+      router.push("/dashboard"); // Redirect to homepage or any protected page
     }
   };
 
