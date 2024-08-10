@@ -38,6 +38,7 @@ const SignUp = () => {
         } else if (result?.ok) {
           router.push("/"); // Redirect to homepage or any protected page
         }
+        console.log(data);
       } else {
         setError(data.error);
       }
