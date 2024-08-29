@@ -21,21 +21,29 @@ const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const result = await signIn("credentials", {
-      redirect: false,
-      email,
-      password,
-    });
+    try {
+      setLoading(true); // Set loading to true
+      const result = await signIn("credentials", {
+        redirect: false,
+        email,
+        password,
+      });
 
-    if (result?.error) {
-      setError(result.error);
-    } else if (result?.ok) {
-      router.push("/dashboard"); // Redirect to homepage or any protected page
+      if (result?.error) {
+        setError(result.error);
+      } else if (result?.ok) {
+        router.push("/dashboard"); // Redirect to homepage or any protected page
+      }
+    } catch (error) {
+      setError("An error occurred. Please try again later.");
+    } finally {
+      setLoading(false); // Set loading back to false
     }
   };
 
@@ -82,8 +90,8 @@ const SignIn = () => {
             {error && (
               <p className="text-red-500 text-sm text-center">{error}</p>
             )}
-            <Button type="submit" className="w-full">
-              Login
+            <Button type="submit" className="w-full" disabled={loading}>
+              {loading ? "Loading..." : "Login"}
             </Button>
             <Button variant="outline" className="w-full">
               Login with Google

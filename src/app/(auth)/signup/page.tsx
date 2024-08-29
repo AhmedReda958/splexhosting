@@ -22,41 +22,56 @@ const SignUp = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      const response = await fetch("/api/auth/register", {
+      setLoading(true); // Set loading to true
+
+      const response = await fetch("/api/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password, firstName, lastName }),
+        body: JSON.stringify({
+          email,
+          password,
+          firstName,
+          lastName,
+        }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
         // Automatically sign in the user after successful registration
-        const result = await signIn("credentials", {
-          redirect: false,
-          email,
-          password,
-        });
+        try {
+          const result = await signIn("credentials", {
+            redirect: false,
+            email,
+            password,
+          });
 
-        if (result?.error) {
-          setError(result.error);
-        } else if (result?.ok) {
-          router.push("/dashboard"); // Redirect to homepage or any protected page
+          if (result?.error) {
+            setError(result.error);
+          } else if (result?.ok) {
+            router.push("/dashboard"); // Redirect to homepage or any protected page
+          }
+        } catch (err) {
+          console.log(err);
+          setError("An error occurred while signing in");
         }
-        console.log(data);
       } else {
         setError(data.error);
       }
     } catch (err) {
+      console.log(err);
       setError("An error occurred");
+    } finally {
+      setLoading(false); // Set loading back to false
     }
   };
 
@@ -120,8 +135,8 @@ const SignUp = () => {
                 {error}
               </div>
             )}
-            <Button type="submit" className="w-full">
-              Create an account
+            <Button type="submit" className="w-full" disabled={loading}>
+              {loading ? "Loading..." : "Create an account"}
             </Button>
             <Button variant="outline" className="w-full" disabled>
               Sign up with Google
