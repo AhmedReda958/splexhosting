@@ -120,6 +120,11 @@ const Sidebar = () => {
           </Tooltip>
         </TooltipProvider>
       </nav>
+      <div className="flex-1 flex items-center justify-center">
+        <span className="-rotate-90 origin-center text-xl text-muted-foreground tracking-widest select-none opacity-60">
+          SplexHosting
+        </span>
+      </div>
       <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
         <TooltipProvider>
           <Tooltip>

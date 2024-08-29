@@ -10,6 +10,7 @@ import {
   LuSettings,
   LuUsers2,
 } from "react-icons/lu";
+import { LiaFileInvoiceDollarSolid } from "react-icons/lia";
 import {
   Tooltip,
   TooltipContent,
@@ -17,6 +18,7 @@ import {
   TooltipProvider,
 } from "@/components/ui/tooltip";
 import { usePathname } from "next/navigation";
+import { BiSupport } from "react-icons/bi";
 
 const Sidebar = () => {
   const pathname = usePathname();
@@ -40,22 +42,6 @@ const Sidebar = () => {
           <Tooltip>
             <TooltipTrigger asChild>
               <Link
-                href="/dashboard"
-                className={`flex h-9 w-9 items-center justify-center rounded-lg ${
-                  pathname === "/dashboard"
-                    ? "bg-accent text-accent-foreground"
-                    : "text-muted-foreground"
-                } transition-colors hover:text-foreground md:h-8 md:w-8`}
-              >
-                <LuHome className="h-5 w-5" />
-                <span className="sr-only">Dashboard</span>
-              </Link>
-            </TooltipTrigger>
-            <TooltipContent side="right">Dashboard</TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Link
                 href="/dashboard/servers"
                 className={`flex h-9 w-9 items-center justify-center rounded-lg ${
                   pathname === "/dashboard/servers"
@@ -74,6 +60,22 @@ const Sidebar = () => {
               <Link
                 href="#"
                 className={`flex h-9 w-9 items-center justify-center rounded-lg ${
+                  pathname === "/dashboard/invoices"
+                    ? "bg-accent text-accent-foreground"
+                    : "text-muted-foreground"
+                } transition-colors hover:text-foreground md:h-8 md:w-8`}
+              >
+                <LiaFileInvoiceDollarSolid className="h-5 w-5" />
+                <span className="sr-only">Invoices</span>
+              </Link>
+            </TooltipTrigger>
+            <TooltipContent side="right">Invoices</TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Link
+                href="#"
+                className={`flex h-9 w-9 items-center justify-center rounded-lg ${
                   pathname === "/dashboard/products"
                     ? "bg-accent text-accent-foreground"
                     : "text-muted-foreground"
@@ -85,46 +87,32 @@ const Sidebar = () => {
             </TooltipTrigger>
             <TooltipContent side="right">Products</TooltipContent>
           </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Link
-                href="#"
-                className={`flex h-9 w-9 items-center justify-center rounded-lg ${
-                  pathname === "/dashboard/customers"
-                    ? "bg-accent text-accent-foreground"
-                    : "text-muted-foreground"
-                } transition-colors hover:text-foreground md:h-8 md:w-8`}
-              >
-                <LuUsers2 className="h-5 w-5" />
-                <span className="sr-only">Customers</span>
-              </Link>
-            </TooltipTrigger>
-            <TooltipContent side="right">Customers</TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Link
-                href="#"
-                className={`flex h-9 w-9 items-center justify-center rounded-lg ${
-                  pathname === "/dashboard/analytics"
-                    ? "bg-accent text-accent-foreground"
-                    : "text-muted-foreground"
-                } transition-colors hover:text-foreground md:h-8 md:w-8`}
-              >
-                <LuLineChart className="h-5 w-5" />
-                <span className="sr-only">Analytics</span>
-              </Link>
-            </TooltipTrigger>
-            <TooltipContent side="right">Analytics</TooltipContent>
-          </Tooltip>
         </TooltipProvider>
       </nav>
       <div className="flex-1 flex items-center justify-center">
         <span className="-rotate-90 origin-center text-xl text-muted-foreground tracking-widest select-none opacity-60">
-          SplexHosting
+          VenixHosting
         </span>
       </div>
       <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Link
+                href="#"
+                className={`flex h-9 w-9 items-center justify-center rounded-lg ${
+                  pathname === "/dashboard/support"
+                    ? "bg-accent text-accent-foreground"
+                    : "text-muted-foreground"
+                } transition-colors hover:text-foreground md:h-8 md:w-8`}
+              >
+                <BiSupport className="h-5 w-5" />
+                <span className="sr-only">Support</span>
+              </Link>
+            </TooltipTrigger>
+            <TooltipContent side="right">Support</TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
