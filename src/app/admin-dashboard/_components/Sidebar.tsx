@@ -40,9 +40,9 @@ const Sidebar = () => {
           <Tooltip>
             <TooltipTrigger asChild>
               <Link
-                href="/dashboard"
+                href="/admin-dashboard"
                 className={`flex h-9 w-9 items-center justify-center rounded-lg ${
-                  pathname === "/dashboard"
+                  pathname === "/admin-dashboard"
                     ? "bg-accent text-accent-foreground"
                     : "text-muted-foreground"
                 } transition-colors hover:text-foreground md:h-8 md:w-8`}
@@ -56,9 +56,25 @@ const Sidebar = () => {
           <Tooltip>
             <TooltipTrigger asChild>
               <Link
-                href="/dashboard/servers"
+                href="#"
                 className={`flex h-9 w-9 items-center justify-center rounded-lg ${
-                  pathname === "/dashboard/servers"
+                  pathname === "/admin-dashboard/customers"
+                    ? "bg-accent text-accent-foreground"
+                    : "text-muted-foreground"
+                } transition-colors hover:text-foreground md:h-8 md:w-8`}
+              >
+                <LuUsers2 className="h-5 w-5" />
+                <span className="sr-only">Customers</span>
+              </Link>
+            </TooltipTrigger>
+            <TooltipContent side="right">Customers</TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Link
+                href="/admin-dashboard/servers"
+                className={`flex h-9 w-9 items-center justify-center rounded-lg ${
+                  pathname === "/admin-dashboard/servers"
                     ? "bg-accent text-accent-foreground"
                     : "text-muted-foreground"
                 } transition-colors hover:text-foreground md:h-8 md:w-8`}
@@ -74,7 +90,7 @@ const Sidebar = () => {
               <Link
                 href="#"
                 className={`flex h-9 w-9 items-center justify-center rounded-lg ${
-                  pathname === "/dashboard/products"
+                  pathname === "/admin-dashboard/products"
                     ? "bg-accent text-accent-foreground"
                     : "text-muted-foreground"
                 } transition-colors hover:text-foreground md:h-8 md:w-8`}
@@ -85,28 +101,13 @@ const Sidebar = () => {
             </TooltipTrigger>
             <TooltipContent side="right">Products</TooltipContent>
           </Tooltip>
+
           <Tooltip>
             <TooltipTrigger asChild>
               <Link
                 href="#"
                 className={`flex h-9 w-9 items-center justify-center rounded-lg ${
-                  pathname === "/dashboard/customers"
-                    ? "bg-accent text-accent-foreground"
-                    : "text-muted-foreground"
-                } transition-colors hover:text-foreground md:h-8 md:w-8`}
-              >
-                <LuUsers2 className="h-5 w-5" />
-                <span className="sr-only">Customers</span>
-              </Link>
-            </TooltipTrigger>
-            <TooltipContent side="right">Customers</TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Link
-                href="#"
-                className={`flex h-9 w-9 items-center justify-center rounded-lg ${
-                  pathname === "/dashboard/analytics"
+                  pathname === "/admin-dashboard/analytics"
                     ? "bg-accent text-accent-foreground"
                     : "text-muted-foreground"
                 } transition-colors hover:text-foreground md:h-8 md:w-8`}
@@ -126,7 +127,7 @@ const Sidebar = () => {
               <Link
                 href="#"
                 className={`flex h-9 w-9 items-center justify-center rounded-lg ${
-                  pathname === "/dashboard/settings"
+                  pathname === "/admin-dashboard/settings"
                     ? "bg-accent text-accent-foreground"
                     : "text-muted-foreground"
                 } transition-colors hover:text-foreground md:h-8 md:w-8`}
