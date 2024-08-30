@@ -92,10 +92,6 @@ const SidebarItem = ({ item }: { item: SidebarItem }) => {
   const pathname = usePathname();
   const session = useSession();
 
-  // return admin items if user is admin and role is admin
-  // return user items if user is user and role is user
-  // return all items if role is all
-  console.log(session.data?.user);
   if (session.data?.user.role == item.role || item.role === "all") {
     return (
       <Tooltip key={item.href}>

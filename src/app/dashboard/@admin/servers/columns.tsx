@@ -13,7 +13,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LuEye, LuFileEdit, LuTrash } from "react-icons/lu";
+import { LuArrowUpDown, LuEye, LuFileEdit, LuTrash } from "react-icons/lu";
+import { DataTableColumnHeader } from "@/components/tables/DataTableColumnHeader";
 
 export const columns: ColumnDef<User>[] = [
   {
@@ -27,11 +28,15 @@ export const columns: ColumnDef<User>[] = [
   },
   {
     accessorKey: "email",
-    header: "Email",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="Email" />;
+    },
   },
   {
     accessorKey: "status",
-    header: "Status",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="Status" />;
+    },
   },
   {
     accessorKey: "role",
@@ -39,8 +44,10 @@ export const columns: ColumnDef<User>[] = [
   },
   {
     accessorKey: "createdAt",
-    header: "Created At",
     accessorFn: (row) => new Date(row.createdAt).toLocaleDateString(),
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="Created At" />;
+    },
   },
   {
     id: "actions",
