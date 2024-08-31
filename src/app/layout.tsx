@@ -8,8 +8,8 @@ import AuthSessionProvider from "@/components/providers/authSessionProvider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Splexhosting",
-  description: "Splexhosting is a hosting platform for VPS.",
+  title: "VenixHosting",
+  description: "VenixHosting is a hosting platform for VPS.",
 };
 
 export default function RootLayout({
