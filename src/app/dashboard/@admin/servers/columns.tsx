@@ -1,9 +1,7 @@
 "use client";
 
-import { User } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -13,46 +11,63 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LuArrowUpDown, LuEye, LuFileEdit, LuTrash } from "react-icons/lu";
+import { LuEye, LuFileEdit, LuTrash } from "react-icons/lu";
 import { DataTableColumnHeader } from "@/components/tables/DataTableColumnHeader";
+import { Server } from "@prisma/client";
 
-export const columns: ColumnDef<User>[] = [
+export const columns: ColumnDef<Server>[] = [
   {
     accessorKey: "id",
     header: "ID",
   },
   {
     accessorKey: "name",
-    header: "Name",
-    accessorFn: (row) => `${row.firstName} ${row.lastName}`,
-  },
-  {
-    accessorKey: "email",
     header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Email" />;
+      return <DataTableColumnHeader column={column} title="Name" />;
     },
   },
   {
-    accessorKey: "status",
+    accessorKey: "ownerEmail",
     header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Status" />;
+      return <DataTableColumnHeader column={column} title="Owner" />;
     },
   },
   {
-    accessorKey: "role",
-    header: "Role",
-  },
-  {
-    accessorKey: "createdAt",
-    accessorFn: (row) => new Date(row.createdAt).toLocaleDateString(),
+    accessorKey: "cores",
     header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Created At" />;
+      return <DataTableColumnHeader column={column} title="Cores" />;
     },
   },
+  {
+    accessorKey: "Memory",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="Memory" />;
+    },
+  },
+  {
+    accessorKey: "storage",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="Storage" />;
+    },
+  },
+
+  // {
+  //   accessorKey: "status",
+  //   header: ({ column }) => {
+  //     return <DataTableColumnHeader column={column} title="Status" />;
+  //   },
+  // },
+  // {
+  //   accessorKey: "createdAt",
+  //   accessorFn: (row) => new Date(row.createdAt).toLocaleDateString(),
+  //   header: ({ column }) => {
+  //     return <DataTableColumnHeader column={column} title="Created At" />;
+  //   },
+  // },
   {
     id: "actions",
     cell: ({ row }) => {
-      const payment = row.original;
+      const server = row.original;
 
       return (
         <DropdownMenu>
@@ -66,15 +81,15 @@ export const columns: ColumnDef<User>[] = [
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem>
               <LuEye className="w-4 h-4 mr-2" />
-              View User
+              View Server
             </DropdownMenuItem>
             <DropdownMenuItem>
               <LuFileEdit className="w-4 h-4 mr-2" />
-              Update User
+              Update Server
             </DropdownMenuItem>
             <DropdownMenuItem className="text-red-400">
               <LuTrash className="w-4 h-4 mr-2" />
-              Delete User
+              Delete Server
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

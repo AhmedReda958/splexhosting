@@ -29,7 +29,6 @@ const getUser = async (userId: Number) => {
 
 const UserPage = async ({ params }: { params: { userId: Number } }) => {
   const user = await getUser(params.userId);
-  console.log(user.servers);
 
   if (!user) return <div>User not found</div>;
 
