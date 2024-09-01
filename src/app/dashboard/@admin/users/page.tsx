@@ -1,22 +1,9 @@
-import { User } from "@prisma/client";
 import { columns } from "./columns";
 import { DataTable } from "./users-table";
-import prisma from "@/lib/prisma";
-
-async function getData(): Promise<User[]> {
-  try {
-    const users = await prisma.user.findMany();
-
-    return users;
-  } catch (error) {
-    // Handle the error here
-    console.error("Error fetching data:", error);
-    return [];
-  }
-}
+import { getAllUsers } from "@/lib/getters/userData";
 
 export default async function DemoPage() {
-  const data = await getData();
+  const data = await getAllUsers();
 
   return (
     <div className="col-span-full container mx-auto py-10">
