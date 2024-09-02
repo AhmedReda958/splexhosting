@@ -21,6 +21,7 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   servers       Server[]
+  dservers      DServer[]
 }
 
 model Server {
@@ -30,6 +31,19 @@ model Server {
   ip4        String
   ram        Int?
   cores      Int?
+  storage    Int?
+  createdAt  DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id])
+}
+
+model DServer {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  name String?
+  desc String?
+  ip4        String
+  cpu        String?
+  ram        Int?
   storage    Int?
   createdAt  DateTime @default(now())
   user       User     @relation(fields: [userId], references: [id])
