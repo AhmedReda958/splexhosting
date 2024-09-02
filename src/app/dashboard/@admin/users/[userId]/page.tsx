@@ -3,7 +3,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
 import {
   Activity,
   HardDrive,
@@ -14,20 +13,18 @@ import {
   Phone,
 } from "lucide-react";
 import { PiMemoryLight } from "react-icons/pi";
+import Link from "next/link";
 
-const getUser = async (userId: Number) => {
+const getUser = async (userId: unknown) => {
   const user = await prisma.user.findUnique({
-    where: {
-      id: Number(userId),
-    },
-    include: {
-      servers: true,
-    },
+    where: { id: Number(userId) },
+    include: { servers: true },
   });
+
   return user;
 };
 
-const UserPage = async ({ params }: { params: { userId: Number } }) => {
+const UserPage = async ({ params }: { params: { userId: unknown } }) => {
   const user = await getUser(params.userId);
 
   if (!user) return <div>User not found</div>;
@@ -93,8 +90,13 @@ const UserPage = async ({ params }: { params: { userId: Number } }) => {
           </Card>
 
           <Card className="md:col-span-2">
-            <CardHeader>
+            <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle>VPS Instances</CardTitle>
+              <Button variant="outline" asChild>
+                <Link href={`/dashboard/servers/new?userId=${user.id}`}>
+                  Add new server +
+                </Link>
+              </Button>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
@@ -131,11 +133,8 @@ const UserPage = async ({ params }: { params: { userId: Number } }) => {
                   </div>
                 ))}
                 {user.servers.length == 0 && (
-                  <div className="flex flex-col items-center gap-5 p-4 border rounded-lg">
-                    <div>
-                      <h3 className="font-semibold">No servers found</h3>
-                    </div>
-                    <Button variant="outline">Add new server +</Button>
+                  <div className=" p-4 border rounded-lg">
+                    <h3 className="font-semibold">No servers found</h3>
                   </div>
                 )}
               </div>

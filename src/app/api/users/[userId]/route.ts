@@ -5,7 +5,10 @@ import { NextRequest } from "next/server";
 
 export const revalidate = 60;
 
-export async function GET(request: NextRequest) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { userId: string } }
+) {
   const session = await getServerSession(authOptions);
   const { role } = session?.user;
 
@@ -13,17 +16,10 @@ export async function GET(request: NextRequest) {
     return Response.json("Unauthorized", { status: 401 });
   }
 
-  const users = await prisma.user.findMany({
-    select: {
-      id: true,
-      email: true,
-      firstName: true,
-      lastName: true,
-      status: true,
-      role: true,
-      createdAt: true,
-      updatedAt: true,
-    },
+  const user = await prisma.user.findUnique({
+    where: { id: Number(params.userId) },
+    include: { servers: true },
   });
-  return Response.json(users);
+
+  return Response.json(user);
 }

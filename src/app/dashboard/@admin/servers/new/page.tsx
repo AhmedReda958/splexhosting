@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect, useCallback } from "react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -28,23 +29,40 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { ArrowLeft, ServerIcon, Users, Search, Loader2 } from "lucide-react";
 
-// Simulated API call
+import {
+  ArrowLeft,
+  ServerIcon,
+  Users,
+  Search,
+  Loader2,
+  LoaderIcon,
+} from "lucide-react";
+import { Server, User } from "@prisma/client";
+import { useToast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
+
+type ServerDetails = {
+  name: string;
+  ip4: string;
+  cpu: number | "custom";
+  customCpu: number;
+  ram: number | "custom";
+  customRam: number;
+  storage: number | "custom";
+  customStorage: number;
+  notes: string;
+  userId: number;
+};
+
 const fetchUsers = async (page = 1, limit = 10, search = "") => {
-  // Simulate API delay
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-
   // Simulated user data
-  const allUsers = Array.from({ length: 50 }, (_, i) => ({
-    id: i + 1,
-    name: `User ${i + 1}`,
-    email: `user${i + 1}@example.com`,
-  }));
+  const allUsers: User[] = await fetch("/api/users").then((res) => res.json());
+  console.log("All users", allUsers);
 
-  const filteredUsers = allUsers.filter(
-    (user) =>
-      user.name.toLowerCase().includes(search.toLowerCase()) ||
+  const filteredUsers: User[] = allUsers.filter(
+    (user: User) =>
+      user.firstName?.toLowerCase().includes(search.toLowerCase()) ||
       user.email.toLowerCase().includes(search.toLowerCase())
   );
 
@@ -56,23 +74,33 @@ const fetchUsers = async (page = 1, limit = 10, search = "") => {
   };
 };
 
-export default function AddServerPage() {
-  const [serverDetails, setServerDetails] = useState({
+export default function AddServerPage({
+  searchParams,
+}: {
+  searchParams: { userId: string };
+}) {
+  const { userId } = searchParams;
+  const { toast } = useToast();
+  const router = useRouter();
+
+  const [serverDetails, setServerDetails] = useState<ServerDetails>({
     name: "",
-    cpu: "",
-    customCpu: "",
-    ram: "",
-    customRam: "",
-    storage: "",
-    customStorage: "",
+    ip4: "",
+    cpu: 0,
+    customCpu: 0,
+    ram: 0,
+    customRam: 0,
+    storage: 0,
+    customStorage: 0,
     notes: "",
+    userId: Number(userId),
   });
   const [isUserModalOpen, setIsUserModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [users, setUsers] = useState([]);
-  const [selectedUser, setSelectedUser] = useState(null);
+  const [users, setUsers] = useState<User[]>([]);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
@@ -94,39 +122,93 @@ export default function AddServerPage() {
     }
   }, [currentPage, searchTerm]);
 
+  const getUser = useCallback(
+    async (userId: string) => {
+      const response = await fetch(`/api/users/${userId}`);
+      const user = await response.json();
+      return user;
+    },
+    [userId]
+  );
+
   useEffect(() => {
     loadUsers();
-  }, [loadUsers]);
+    getUser(userId).then((user) => setSelectedUser(user));
+  }, [loadUsers, getUser, userId]);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     setServerDetails((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSelectChange = (name, value) => {
+  const handleSelectChange = (name: string, value: string) => {
+    console.log(name, value);
     setServerDetails((prev) => ({
       ...prev,
       [name]: value,
       [`custom${name.charAt(0).toUpperCase() + name.slice(1)}`]:
         value === "custom"
-          ? prev[`custom${name.charAt(0).toUpperCase() + name.slice(1)}`]
-          : "",
+          ? (prev as any)[
+              `custom${name.charAt(0).toUpperCase() + name.slice(1)}`
+            ]
+          : 0,
     }));
+    console.log(serverDetails);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("New server details:", serverDetails);
-    // Here you would typically send this data to your backend
-    // Reset form or redirect user after successful submission
+    setLoading(true);
+    try {
+      const serverData = {
+        ...serverDetails,
+        cores:
+          serverDetails.cpu === "custom"
+            ? Number(serverDetails.customCpu)
+            : Number(serverDetails.cpu),
+        ram:
+          serverDetails.ram === "custom"
+            ? Number(serverDetails.customRam)
+            : Number(serverDetails.ram),
+        storage:
+          serverDetails.storage === "custom"
+            ? Number(serverDetails.customStorage)
+            : Number(serverDetails.storage),
+      };
+
+      const response = await fetch("/api/server/new", {
+        method: "POST",
+        body: JSON.stringify(serverData),
+      });
+      const data = await response.json();
+
+      toast({
+        title: "Success",
+        description: data.message,
+      });
+      console.log("New server data:", data);
+      alert("server Created successfully");
+      router.push(`/dashboard/servers/${data.server.id}`);
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to create server. Please try again.",
+      });
+      alert("Failed to create server. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleUserSelect = (user) => {
+  const handleUserSelect = (user: User) => {
     setSelectedUser(user);
     setIsUserModalOpen(false);
   };
 
-  const handleSearch = (e) => {
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
     setCurrentPage(1);
   };
@@ -135,9 +217,11 @@ export default function AddServerPage() {
     <div className="col-span-full container mx-auto p-6">
       <div className="mb-6">
         <div className="flex justify-between items-center mb-4">
-          <Button variant="ghost">
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to User
+          <Button variant="ghost" asChild>
+            <Link href={`/dashboard/users/${selectedUser?.id || ""}`}>
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back to User
+            </Link>
           </Button>
           <Dialog open={isUserModalOpen} onOpenChange={setIsUserModalOpen}>
             <DialogTrigger asChild>
@@ -171,14 +255,16 @@ export default function AddServerPage() {
                   ) : error ? (
                     <div className="text-center text-red-500">{error}</div>
                   ) : (
-                    users.map((user) => (
+                    users.map((user: User) => (
                       <div
                         key={user.id}
                         className="flex items-center justify-between py-2 px-4 hover:bg-accent cursor-pointer"
                         onClick={() => handleUserSelect(user)}
                       >
                         <div>
-                          <p className="font-medium">{user.name}</p>
+                          <p className="font-medium">
+                            {user.firstName} {user.lastName}
+                          </p>
                           <p className="text-sm text-muted-foreground">
                             {user.email}
                           </p>
@@ -217,7 +303,11 @@ export default function AddServerPage() {
         </div>
         <h1 className="text-3xl font-bold">
           Add New Server for{" "}
-          {selectedUser ? selectedUser.name : "Select a User"}
+          {selectedUser ? (
+            selectedUser.firstName + " " + selectedUser.lastName
+          ) : (
+            <span className="text-muted-foreground">not selected</span>
+          )}
         </h1>
         <p className="text-muted-foreground">
           Configure and deploy a new VPS instance
@@ -239,8 +329,32 @@ export default function AddServerPage() {
                 id="name"
                 name="name"
                 value={serverDetails.name}
-                onChange={handleInputChange}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  handleInputChange(e)
+                }
                 placeholder="Enter a name for this server"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="name">User Email</Label>
+              <Input
+                id="email"
+                name="email"
+                value={selectedUser?.email || " "}
+                required
+                placeholder="No user selected"
+                disabled
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="name">IPv4</Label>
+              <Input
+                id="ip4"
+                name="ip4"
+                value={serverDetails.ip4}
+                onChange={handleInputChange}
+                required
+                placeholder="256.256.256.256"
               />
             </div>
 
@@ -250,6 +364,7 @@ export default function AddServerPage() {
                 <Select
                   name="cpu"
                   onValueChange={(value) => handleSelectChange("cpu", value)}
+                  required
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select CPU" />
@@ -266,7 +381,6 @@ export default function AddServerPage() {
                   <Input
                     id="customCpu"
                     name="customCpu"
-                    value={serverDetails.customCpu}
                     onChange={handleInputChange}
                     placeholder="Enter custom CPU"
                     className="mt-2"
@@ -279,6 +393,7 @@ export default function AddServerPage() {
                 <Select
                   name="ram"
                   onValueChange={(value) => handleSelectChange("ram", value)}
+                  required
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select RAM" />
@@ -295,7 +410,6 @@ export default function AddServerPage() {
                   <Input
                     id="customRam"
                     name="customRam"
-                    value={serverDetails.customRam}
                     onChange={handleInputChange}
                     placeholder="Enter custom RAM"
                     className="mt-2"
@@ -326,7 +440,6 @@ export default function AddServerPage() {
                   <Input
                     id="customStorage"
                     name="customStorage"
-                    value={serverDetails.customStorage}
                     onChange={handleInputChange}
                     placeholder="Enter custom storage"
                     className="mt-2"
@@ -347,9 +460,17 @@ export default function AddServerPage() {
             </div>
           </CardContent>
           <CardFooter>
-            <Button type="submit" className="w-full" disabled={!selectedUser}>
-              <ServerIcon className="mr-2 h-4 w-4" />
-              Deploy Server
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={!selectedUser || loading}
+            >
+              {loading ? (
+                <LoaderIcon className="mr-2 h-4 w-4" />
+              ) : (
+                <ServerIcon className="mr-2 h-4 w-4" />
+              )}
+              {loading ? "Loading..." : "Create Server"}
             </Button>
           </CardFooter>
         </Card>
