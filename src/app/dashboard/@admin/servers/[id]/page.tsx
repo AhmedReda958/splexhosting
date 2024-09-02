@@ -1,76 +1,11 @@
-import data from "@/data";
-import {
-  LuServer,
-  LuServerOff,
-  LuCpu,
-  LuMemoryStick,
-  LuLineChart,
-  LuDatabase,
-  LuChevronLeft,
-  LuChevronRight,
-  LuCopy,
-  LuCreditCard,
-  //   File,
-  //   Home,
-  //   LineChart,
-  //   ListFilter,
-  LuMoreVertical,
-  //   Package,
-  //   Package2,
-  //   PanelLeft,
-  //   Search,
-  //   Settings,
-  //   ShoppingCart,
-  //   LuTruck,
-  //   Users2,
-} from "react-icons/lu";
-
-import {
-  RiShutDownLine,
-  RiRestartLine,
-  RiStopCircleLine,
-  RiUploadCloudLine,
-  RiInstallLine,
-  RiLockPasswordLine,
-  RiPlayCircleLine,
-} from "react-icons/ri";
-
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
-import { Progress } from "@/components/ui/progress";
-import { Separator } from "@/components/ui/separator";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+
 import { getServerById } from "@/lib/getters/serverData";
 import { Server } from "@prisma/client";
 import { Badge } from "@/components/ui/badge";
@@ -84,66 +19,7 @@ import {
   PackageIcon,
   GlobeIcon,
 } from "lucide-react";
-
-const ServerControls = ({ server }: { server: Server }) => {
-  return (
-    <div className="grid grid-cols-3 md:grid-cols-6  gap-4 text-nowrap">
-      <Card className="col-span-3">
-        <CardContent className="relative  h-36  p-3 flex flex-col items-center justify-end font-bold ">
-          <span
-            className={`absolute top-4 end-4 h-3 w-3 rounded-full ${
-              server.online ? "bg-green-500" : "bg-red-500"
-            }`}
-          ></span>
-
-          {server.online ? (
-            <>
-              <RiStopCircleLine className="w-24 h-24 dark:text-blue-400 opacity-50" />
-              <span>Stop</span>
-            </>
-          ) : (
-            <>
-              <RiPlayCircleLine className="w-24 h-24 dark:text-blue-400 opacity-50" />
-              <span>Start</span>
-            </>
-          )}
-        </CardContent>
-      </Card>
-      <Card className="col-span-2">
-        <CardContent className=" h-36  p-3 flex flex-col items-center justify-end font-bold ">
-          <RiUploadCloudLine className="w-24 h-24 dark:text-blue-400 opacity-50" />
-          <span>Backup</span>
-        </CardContent>
-      </Card>
-      <Card className="">
-        <CardContent className="h-36  p-3 flex flex-col items-center justify-end font-bold ">
-          <RiInstallLine className="w-24 h-24 dark:text-blue-400 opacity-50" />
-          <span>Reinstall</span>
-        </CardContent>
-      </Card>
-
-      <Card className="col-span-full md:col-span-2">
-        <CardContent className="h-36  p-3 flex flex-col items-center justify-end font-bold ">
-          <RiShutDownLine className="w-24 h-24 dark:text-blue-400 opacity-50" />
-          <span>Shut Down</span>
-        </CardContent>
-      </Card>
-      <Card className="col-span-full md:col-span-2">
-        <CardContent className="h-36  p-3 flex flex-col items-center justify-end font-bold ">
-          <RiRestartLine className="w-24 h-24 dark:text-blue-400 opacity-50" />
-          <span>Restart</span>
-        </CardContent>
-      </Card>
-
-      <Card className="col-span-full md:col-span-2">
-        <CardContent className="h-36  p-3 flex flex-col items-center justify-end font-bold ">
-          <RiLockPasswordLine className="w-24 h-24 dark:text-blue-400 opacity-50" />
-          <span>Change Password</span>
-        </CardContent>
-      </Card>
-    </div>
-  );
-};
+import ServerControls from "./serverControls";
 
 const ServerPage = async ({ params }: { params: { id: string } }) => {
   const id = parseInt(params.id);
@@ -236,13 +112,13 @@ const ServerPage = async ({ params }: { params: { id: string } }) => {
                 <InfoItem
                   icon={<CalendarIcon className="mr-2 h-4 w-4" />}
                   label="Created On"
-                  value={new Date(serverData.createdAt).toLocaleDateString()}
+                  value={new Date(serverData.createdAt).toDateString()}
                 />
                 {serverData.expiresAt && (
                   <InfoItem
                     icon={<RefreshCwIcon className="mr-2 h-4 w-4" />}
                     label="Next Recharge"
-                    value={new Date(serverData.expiresAt).toLocaleDateString()}
+                    value={new Date(serverData.expiresAt).toDateString()}
                   />
                 )}
               </div>
