@@ -45,14 +45,16 @@ import { useRouter } from "next/navigation";
 type ServerDetails = {
   name: string;
   ip4: string;
-  cpu: number | "custom";
-  customCpu: number;
+  ip6: string;
+  type: "vps" | "dedicated";
+  cpu: string;
+  cores: number | "custom";
+  customCores: number;
   ram: number | "custom";
   customRam: number;
   storage: number | "custom";
   customStorage: number;
   notes: string;
-  userId: number;
 };
 
 const fetchUsers = async (page = 1, limit = 10, search = "") => {
@@ -86,14 +88,16 @@ export default function AddServerPage({
   const [serverDetails, setServerDetails] = useState<ServerDetails>({
     name: "",
     ip4: "",
-    cpu: 0,
-    customCpu: 0,
+    ip6: "",
+    cores: 0,
+    customCores: 0,
     ram: 0,
     customRam: 0,
     storage: 0,
     customStorage: 0,
     notes: "",
-    userId: Number(userId),
+    type: "vps",
+    cpu: "",
   });
   const [isUserModalOpen, setIsUserModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -155,7 +159,6 @@ export default function AddServerPage({
             ]
           : 0,
     }));
-    console.log(serverDetails);
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -165,9 +168,9 @@ export default function AddServerPage({
       const serverData = {
         ...serverDetails,
         cores:
-          serverDetails.cpu === "custom"
-            ? Number(serverDetails.customCpu)
-            : Number(serverDetails.cpu),
+          serverDetails.cores === "custom"
+            ? Number(serverDetails.customCores)
+            : Number(serverDetails.cores),
         ram:
           serverDetails.ram === "custom"
             ? Number(serverDetails.customRam)
@@ -176,7 +179,9 @@ export default function AddServerPage({
           serverDetails.storage === "custom"
             ? Number(serverDetails.customStorage)
             : Number(serverDetails.storage),
+        userId: selectedUser?.id || Number(userId),
       };
+      console.log("Server data:", serverData);
 
       const response = await fetch("/api/server/new", {
         method: "POST",
@@ -316,11 +321,28 @@ export default function AddServerPage({
 
       <form onSubmit={handleSubmit}>
         <Card>
-          <CardHeader>
-            <CardTitle>Server Configuration</CardTitle>
-            <CardDescription>
-              Specify the details for the new server instance.
-            </CardDescription>
+          <CardHeader className="flex flex-row items-center justify-between">
+            <div>
+              <CardTitle>Server Configuration</CardTitle>
+              <CardDescription>
+                Specify the details for the new server instance.
+              </CardDescription>
+            </div>
+            {/* server type */}
+            <Select
+              name="type"
+              onValueChange={(value) => handleSelectChange("type", value)}
+              defaultValue="vps"
+              required
+            >
+              <SelectTrigger className="w-fit">
+                <SelectValue placeholder="select server Type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="vps">VPS Server</SelectItem>
+                <SelectItem value="dedicated">Dedicated Server</SelectItem>
+              </SelectContent>
+            </Select>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="space-y-2">
@@ -357,37 +379,72 @@ export default function AddServerPage({
                 placeholder="256.256.256.256"
               />
             </div>
+            <div className="space-y-2">
+              <Label htmlFor="name">IPv6</Label>
+              <Input
+                id="ip6"
+                name="ip6"
+                value={serverDetails.ip6}
+                onChange={handleInputChange}
+                placeholder="ff06:0:0:0:0:0:0:c3"
+              />
+            </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="cpu">CPU (vCPU)</Label>
-                <Select
-                  name="cpu"
-                  onValueChange={(value) => handleSelectChange("cpu", value)}
-                  required
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select CPU" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="1">1 vCPU</SelectItem>
-                    <SelectItem value="2">2 vCPU</SelectItem>
-                    <SelectItem value="4">4 vCPU</SelectItem>
-                    <SelectItem value="8">8 vCPU</SelectItem>
-                    <SelectItem value="custom">Custom</SelectItem>
-                  </SelectContent>
-                </Select>
-                {serverDetails.cpu === "custom" && (
-                  <Input
-                    id="customCpu"
-                    name="customCpu"
-                    onChange={handleInputChange}
-                    placeholder="Enter custom CPU"
-                    className="mt-2"
-                  />
-                )}
-              </div>
+              {/* cpu for dedicated */}
+              {serverDetails.type === "dedicated" ? (
+                <div className="space-y-2">
+                  <Label htmlFor="cpu">CPU (vCPU)</Label>
+                  <Select
+                    name="cpu"
+                    onValueChange={(value) => handleSelectChange("cpu", value)}
+                    required
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select cores" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="i9">I9 CPU </SelectItem>
+                      <SelectItem value="i7">I7 CPU</SelectItem>
+                      <SelectItem value="i5">I5 CPU</SelectItem>
+                      <SelectItem value="i3">I3 CPU</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  <Label htmlFor="cores">CPU cores </Label>
+                  <Select
+                    name="cores"
+                    onValueChange={(value) =>
+                      handleSelectChange("cores", value)
+                    }
+                    required
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select cores" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="1">1 core</SelectItem>
+                      <SelectItem value="2">2 core</SelectItem>
+                      <SelectItem value="4">4 core</SelectItem>
+                      <SelectItem value="8">8 core</SelectItem>
+                      <SelectItem value="custom">Custom</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  {serverDetails.cores === "custom" && (
+                    <Input
+                      id="customCores"
+                      name="customCores"
+                      onChange={handleInputChange}
+                      placeholder="Enter custom CPU cores"
+                      className="mt-2"
+                    />
+                  )}
+                </div>
+              )}
 
+              {/* memory */}
               <div className="space-y-2">
                 <Label htmlFor="ram">RAM</Label>
                 <Select
@@ -417,6 +474,7 @@ export default function AddServerPage({
                 )}
               </div>
 
+              {/* storage */}
               <div className="space-y-2">
                 <Label htmlFor="storage">Storage</Label>
                 <Select
@@ -447,7 +505,7 @@ export default function AddServerPage({
                 )}
               </div>
             </div>
-
+            {/* notes */}
             <div className="space-y-2">
               <Label htmlFor="notes">Additional Notes</Label>
               <Textarea

@@ -6,24 +6,26 @@ const prisma = new PrismaClient();
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { name, cores, ip4, ram, storage, userId } = body;
+    const { name, cpu, cores, ip4, ram, storage, userId } = body;
 
-    if (!name || !cores || !ram || !storage || !userId) {
+    if (!name || !ram || !storage || !userId) {
       return NextResponse.json(
         { message: "Missing required fields" },
         { status: 400 }
       );
     }
+    console.log(cpu);
 
     // Create a new server entry in the database
     const newServer = await prisma.server.create({
       data: {
         name,
-        cores,
         ip4,
+        cores,
+        cpu,
         ram,
         storage,
-        user: { connect: { id: userId } }, // Replace '1' with the actual user ID
+        user: { connect: { id: userId } },
       },
     });
 
