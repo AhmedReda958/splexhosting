@@ -36,9 +36,24 @@ model Server {
   cores      Int?
   storage    Int?
   operating  String?
+  productName String? @default("custom")
   status     String   @default("active")
   createdAt  DateTime @default(now())
   expiresAt  DateTime?
   user       User     @relation(fields: [userId], references: [id])
 }
 
+model Product {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  features    String[]
+  price       Int
+  type       String   @default("vps")
+  cpu         String?
+  cores       Int?
+  ram         Int?
+  storage     Int?
+  status      String   @default("pending")
+  createdAt   DateTime @default(now())
+}
