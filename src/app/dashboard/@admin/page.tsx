@@ -4,6 +4,7 @@ import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { BiSupport } from "react-icons/bi";
 import { LuCreditCard, LuPackage, LuServer, LuUsers2 } from "react-icons/lu";
 import { VscTools } from "react-icons/vsc";
+import Link from "next/link";
 
 const HomePage = async () => {
   const session = await getServerSession(authOptions);
@@ -20,16 +21,20 @@ const HomePage = async () => {
           </CardContent>
         </Card>
         <Card className=" cursor-pointer">
-          <CardContent className="p-6 pb-8 flex flex-col items-center justify-end font-bold ">
-            <LuUsers2 className="w-24 h-24 dark:text-blue-400 opacity-50" />
-            <CardTitle className="mt-4">All Users</CardTitle>
-          </CardContent>
+          <Link href="/dashboard/users">
+            <CardContent className="p-6 pb-8 flex flex-col items-center justify-end font-bold ">
+              <LuUsers2 className="w-24 h-24 dark:text-blue-400 opacity-50" />
+              <CardTitle className="mt-4">All Users</CardTitle>
+            </CardContent>
+          </Link>
         </Card>
         <Card className=" cursor-pointer">
-          <CardContent className="p-6 pb-8 flex flex-col items-center justify-end font-bold ">
-            <LuServer className="w-24 h-24 dark:text-blue-400 opacity-50" />
-            <CardTitle className="mt-4">All Servers</CardTitle>
-          </CardContent>
+          <Link href="/dashboard/servers">
+            <CardContent className="p-6 pb-8 flex flex-col items-center justify-end font-bold ">
+              <LuServer className="w-24 h-24 dark:text-blue-400 opacity-50" />
+              <CardTitle className="mt-4">All Servers</CardTitle>
+            </CardContent>
+          </Link>
         </Card>
         <Card className=" cursor-pointer">
           <CardContent className="p-6 pb-8 flex flex-col items-center justify-end font-bold ">

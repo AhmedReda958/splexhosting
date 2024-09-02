@@ -33,6 +33,12 @@ export const columns: ColumnDef<Server>[] = [
     },
   },
   {
+    accessorKey: "type",
+    header: ({ column }) => {
+      return <DataTableColumnHeader column={column} title="Type" />;
+    },
+  },
+  {
     accessorKey: "cores",
     header: ({ column }) => {
       return <DataTableColumnHeader column={column} title="Cores" />;
