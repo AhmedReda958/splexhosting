@@ -15,36 +15,30 @@ model User {
   password      String
   phoneNumber   String?
   role          String    @default("user")
+  credits       Int       @default(0)
   emailVerified DateTime?
   status        String    @default("active")
   lastLogin     DateTime?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   servers       Server[]
-  dservers      DServer[]
 }
 
 model Server {
   id         Int      @id @default(autoincrement())
   userId     Int
-  name String?
+  type       String  @default("vps")
+  name       String?
   ip4        String
+  ip6        String?
   ram        Int?
+  cpu       String?
   cores      Int?
   storage    Int?
+  operating  String?
+  status     String   @default("active")
   createdAt  DateTime @default(now())
+  expiresAt  DateTime?
   user       User     @relation(fields: [userId], references: [id])
 }
 
-model DServer {
-  id         Int      @id @default(autoincrement())
-  userId     Int
-  name String?
-  desc String?
-  ip4        String
-  cpu        String?
-  ram        Int?
-  storage    Int?
-  createdAt  DateTime @default(now())
-  user       User     @relation(fields: [userId], references: [id])
-}
