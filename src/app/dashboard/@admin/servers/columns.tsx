@@ -27,7 +27,7 @@ export const columns: ColumnDef<Server>[] = [
     },
   },
   {
-    accessorKey: "ownerEmail",
+    accessorKey: "user.email",
     header: ({ column }) => {
       return <DataTableColumnHeader column={column} title="Owner" />;
     },
@@ -39,7 +39,7 @@ export const columns: ColumnDef<Server>[] = [
     },
   },
   {
-    accessorKey: "Memory",
+    accessorKey: "ram",
     header: ({ column }) => {
       return <DataTableColumnHeader column={column} title="Memory" />;
     },

@@ -27,8 +27,6 @@ async function getData(): Promise<Server[]> {
 
 export default async function DemoPage() {
   const data = await getData();
-
-  console.log(data);
   return (
     <div className="col-span-full container mx-auto py-10">
       <div className="flex items-center justify-between mb-6">
