@@ -1,5 +1,7 @@
 import { Server } from "@prisma/client";
 import prisma from "@/lib/prisma";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../auth";
 
 export async function getAllServers(): Promise<Server[]> {
   try {
@@ -21,6 +23,21 @@ export async function getServerById(
     const server = await prisma.server.findUnique({
       where: { id },
       include: withUser ? { user: true } : undefined,
+    });
+
+    return server;
+  } catch (error) {
+    // Handle the error here
+    console.error("Error fetching data:", error);
+    return null;
+  }
+}
+
+export async function getCurrentUserServers() {
+  const session = await getServerSession(authOptions);
+  try {
+    const server = await prisma.server.findMany({
+      where: { userId: Number(session?.user.id) },
     });
 
     return server;

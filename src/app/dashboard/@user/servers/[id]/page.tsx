@@ -71,6 +71,8 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { getServerById } from "@/lib/getters/serverData";
+import { Server } from "@prisma/client";
 
 const ServerControls = ({ server }: { server: (typeof data)[0] }) => {
   return (
@@ -132,7 +134,7 @@ const ServerControls = ({ server }: { server: (typeof data)[0] }) => {
   );
 };
 
-const ServerInfo = ({ server }: { server: (typeof data)[0] }) => {
+const ServerInfo = ({ server }: { server: Server }) => {
   return (
     <Card className="overflow-hidden" x-chunk="dashboard-05-chunk-4">
       <CardHeader className="flex flex-row items-start bg-muted/50">
@@ -149,7 +151,7 @@ const ServerInfo = ({ server }: { server: (typeof data)[0] }) => {
             </Button>
           </CardTitle>
           <CardDescription>
-            Ordered at: {server.service_ordered_at}
+            Ordered at: {server.createdAt.toDateString()}
           </CardDescription>
         </div>
         <div className="ml-auto flex items-center gap-1">
@@ -184,31 +186,17 @@ const ServerInfo = ({ server }: { server: (typeof data)[0] }) => {
                   <LuCopy className="h-3 w-3" />
                   <span className="sr-only">Copy Server Ip</span>
                 </Button>
-                {server.addresses[0].ip}
+                {server.ip4}
               </span>
             </li>
             <li className="flex items-center justify-between">
-              <span className="text-muted-foreground">RDNS</span>
-              <span className="group underline">
-                <Button
-                  size="icon"
-                  variant="outline"
-                  className="h-6 w-6 me-2 opacity-0 transition-opacity group-hover:opacity-100"
-                >
-                  <LuCopy className="h-3 w-3" />
-                  <span className="sr-only">Copy Server RDNS</span>
-                </Button>
-                {server.addresses[0].rdns}
-              </span>
-            </li>
-            <li className="flex items-center justify-between">
-              <span className="text-muted-foreground">Service Ordered At</span>
-              <span>{server.expire_at}</span>
+              <span className="text-muted-foreground">Service expires At</span>
+              <span>{server.createdAt.toDateString()}</span>
             </li>
 
             <li className="flex items-center justify-between">
               <span className="text-muted-foreground">Status</span>
-              {server.online ? (
+              {true ? (
                 <span className="font-bold text-green-500 dark:text-green-400">
                   Online
                 </span>
@@ -228,19 +216,19 @@ const ServerInfo = ({ server }: { server: (typeof data)[0] }) => {
             </li>
             <li className="flex items-center justify-between">
               <span className="text-muted-foreground">Memory</span>
-              <span>{server.memory / 1024} GB</span>
+              <span>{server.ram} GB</span>
             </li>
             <li className="flex items-center justify-between">
               <span className="text-muted-foreground">Disk</span>
-              <span>{server.disk_size} GB</span>
+              <span>{server.storage} GB</span>
             </li>
           </ul>
           <Separator className="my-2" />
-          <div className="font-semibold">Resource Usage</div>
+          {/* <div className="font-semibold">Resource Usage</div>
           <ul className="gird gap-3">
             <li className="flex items-center justify-between">
               <span className="text-muted-foreground">CPU</span>
-              <span>{server.cpu_pc}%</span>
+              <span>{server.cores}%</span>
             </li>
             <li className="flex items-center justify-between">
               <span className="text-muted-foreground">Memory</span>
@@ -263,8 +251,8 @@ const ServerInfo = ({ server }: { server: (typeof data)[0] }) => {
                 {Math.floor(server.traffic)}GB
               </span>
             </li>
-          </ul>
-          <Separator className="my-2" />
+          </ul> */}
+          {/* <Separator className="my-2" />
           <ul className="grid gap-3">
             <li className="flex items-center justify-between">
               <span className="text-muted-foreground">Subtotal</span>
@@ -282,14 +270,14 @@ const ServerInfo = ({ server }: { server: (typeof data)[0] }) => {
               <span className="text-muted-foreground">Total</span>
               <span>$329.00</span>
             </li>
-          </ul>
+          </ul>*/}
         </div>
         <Separator className="my-4" />
         <div className="grid grid-cols-2 gap-4">
           <div className="grid gap-3">
-            <div className="font-semibold">Service Name</div>
+            <div className="font-semibold">Server Name</div>
             <address className="grid gap-0.5 not-italic text-muted-foreground">
-              <span>{server.product_name}</span>
+              <span>{server.name}</span>
             </address>
           </div>
           <div className="grid auto-rows-max gap-3">
@@ -319,19 +307,6 @@ const ServerInfo = ({ server }: { server: (typeof data)[0] }) => {
             </div>
           </dl>
         </div>
-        <Separator className="my-4" />
-        <div className="grid gap-3">
-          <div className="font-semibold">Payment Information</div>
-          <dl className="grid gap-3">
-            <div className="flex items-center justify-between">
-              <dt className="flex items-center gap-1 text-muted-foreground">
-                <LuCreditCard className="h-4 w-4" />
-                Visa
-              </dt>
-              <dd>**** **** **** 4532</dd>
-            </div>
-          </dl>
-        </div>
       </CardContent>
       <CardFooter className="flex flex-row items-center border-t bg-muted/50 px-6 py-3">
         <div className="text-xs text-muted-foreground">
@@ -342,10 +317,12 @@ const ServerInfo = ({ server }: { server: (typeof data)[0] }) => {
   );
 };
 
-const ServerPage = ({ params }: { params: { id: string } }) => {
-  const server = data.find((server) => server.id === Number(params.id));
+const ServerPage = async ({ params }: { params: { id: string } }) => {
+  const id = parseInt(params.id);
+  const realserver = await getServerById(id, true);
+  if (!realserver) return <div>realServer not found</div>;
 
-  if (!server) return <div>Server not found</div>;
+  const server = data[0];
   return (
     <>
       <div className="grid auto-rows-max items-start gap-4 md:gap-8 lg:col-span-2">
@@ -426,7 +403,7 @@ const ServerPage = ({ params }: { params: { id: string } }) => {
           </div>
         </div>
       </div>
-      <ServerInfo server={server} />
+      <ServerInfo server={realserver} />
     </>
   );
 };

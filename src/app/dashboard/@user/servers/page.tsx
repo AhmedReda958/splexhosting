@@ -1,16 +1,18 @@
 import { LuServer, LuServerOff } from "react-icons/lu";
 import { FaPlus } from "react-icons/fa";
 import Link from "next/link";
-import data from "@/data";
-import { Card, CardContent } from "@/components/ui/card";
 
-const ServerCard: React.FC<{ server: (typeof data)[0] }> = ({ server }) => {
+import { Card, CardContent } from "@/components/ui/card";
+import { Server } from "@prisma/client";
+import { getCurrentUserServers } from "@/lib/getters/serverData";
+
+const ServerCard = ({ server }: { server: Server }) => {
   return (
     <Link href={`servers/${server.id}`}>
       <Card>
         <CardContent className="p-4  shadow-md rounded-lg flex gap-6">
           <div className="flex-shrink-0">
-            {server.online ? (
+            {true ? (
               <LuServer className="w-16 h-16 text-green-600 dark:text-green-400 " />
             ) : (
               <LuServerOff className="w-16 h-16 text-gray-600" />
@@ -18,18 +20,13 @@ const ServerCard: React.FC<{ server: (typeof data)[0] }> = ({ server }) => {
           </div>
           <div className="flex-1 ">
             <h3 className="text-lg font-semibold">Server {server.id}</h3>
-            <p className="text-sm">IP: {server.addresses[0].ip}</p>
-            <p className="text-sm">
-              CPU:{" "}
-              <span
-                className={server.cpu_pc >= 80 ? "text-red-400 font-bold" : ""}
-              >
-                {server.cpu_pc}%
-              </span>
-            </p>
+            <p className="text-sm">IP: {server.ip4}</p>
+            <p className="text-sm">CPU: {server.cores}</p>
+            <p className="text-sm">Memory: {server.ram}</p>
+            <p className="text-sm">Storage: {server.storage}</p>
             <p className="text-sm ">
               Status:{" "}
-              {server.online ? (
+              {true ? (
                 <span className="font-bold text-green-500 dark:text-green-400">
                   Online
                 </span>
@@ -46,12 +43,13 @@ const ServerCard: React.FC<{ server: (typeof data)[0] }> = ({ server }) => {
   );
 };
 
-const Servers: React.FC = () => {
+const Servers = async () => {
+  const servers = await getCurrentUserServers();
   return (
     <div className="col-span-full">
       <h2 className="mb-6">Servers</h2>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {data.map((server) => (
+        {servers?.map((server: Server) => (
           <ServerCard key={server.id} server={server} />
         ))}
 
