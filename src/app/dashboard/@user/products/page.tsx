@@ -8,10 +8,24 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { TabsTrigger, TabsList, TabsContent, Tabs } from "@/components/ui/tabs";
-import { dedicatedPlans, Plan, vpsPlans } from "@/data";
-import { Check, Server } from "lucide-react";
+import prisma from "@/lib/prisma";
+import { Product } from "@prisma/client";
+import { Check } from "lucide-react";
 
-export default function Component() {
+async function getProducts() {
+  try {
+    const products = await prisma.product.findMany();
+    return products;
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    // Handle the error here, e.g. show an error message to the user
+    return [];
+  }
+}
+
+export default async function Component() {
+  const products = await getProducts();
+
   return (
     <div className="container mx-auto px-4 py-8">
       <header className="text-center mb-12">
@@ -31,16 +45,24 @@ export default function Component() {
         </TabsList>
         <TabsContent value="vps">
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {vpsPlans.map((plan) => (
-              <ServerPlanCard key={plan.name} plan={plan} type="VPS" />
-            ))}
+            {products
+              .filter((product) => product.type == "vps")
+              .map((product) => (
+                <ProductCard key={product.id} product={product} type="VPS" />
+              ))}
           </div>
         </TabsContent>
         <TabsContent value="dedicated">
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {dedicatedPlans.map((plan) => (
-              <ServerPlanCard key={plan.name} plan={plan} type="Dedicated" />
-            ))}
+            {products
+              .filter((product) => product.type == "dedicated")
+              .map((product) => (
+                <ProductCard
+                  key={product.name}
+                  product={product}
+                  type="Dedicated"
+                />
+              ))}
           </div>
         </TabsContent>
       </Tabs>
@@ -57,20 +79,20 @@ export default function Component() {
   );
 }
 
-function ServerPlanCard({ plan, type }: { plan: Plan; type: string }) {
+function ProductCard({ product, type }: { product: Product; type: string }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{plan.name}</CardTitle>
-        <CardDescription>{plan.description}</CardDescription>
+        <CardTitle>{product.name}</CardTitle>
+        <CardDescription>{product.description}</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="text-4xl font-bold mb-4">
-          ${plan.price}
+          ${product.price}
           <span className="text-sm font-normal">/mo</span>
         </div>
         <ul className="space-y-2">
-          {plan.features.map((feature, index) => (
+          {product.features.map((feature, index) => (
             <li key={index} className="flex items-center">
               <Check className="mr-2 h-4 w-4 text-green-500" />
               {feature}
