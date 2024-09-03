@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -17,14 +17,48 @@ import { CreditCard, DollarSign } from "lucide-react";
 export default function Component() {
   const [balance, setBalance] = useState(100);
   const [amount, setAmount] = useState("");
+  const [paypalLoaded, setPaypalLoaded] = useState(false);
+
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = `https://www.paypal.com/sdk/js?client-id=YOUR_LIVE_CLIENT_ID`;
+    script.addEventListener("load", () => setPaypalLoaded(true));
+    document.body.appendChild(script);
+  }, []);
 
   const handlePayment = () => {
-    // This is where you'd normally integrate with PayPal SDK
-    // For this example, we'll just update the balance
-    const newBalance = balance + Number(amount);
-    setBalance(newBalance);
-    setAmount("");
-    alert(`Successfully added ${amount} credits!`);
+    if (!paypalLoaded) {
+      alert("PayPal SDK not loaded yet. Please wait.");
+      return;
+    }
+
+    window.paypal
+      .Buttons({
+        createOrder: (data, actions) => {
+          return actions.order.create({
+            purchase_units: [
+              {
+                amount: {
+                  value: amount,
+                },
+              },
+            ],
+          });
+        },
+        onApprove: (data, actions) => {
+          return actions.order.capture().then((details) => {
+            const newBalance = balance + Number(amount);
+            setBalance(newBalance);
+            setAmount("");
+            alert(`Successfully added ${amount} credits!`);
+          });
+        },
+        onError: (err) => {
+          alert("Payment could not be processed. Please try again.");
+          console.error("PayPal Checkout Error:", err);
+        },
+      })
+      .render("#paypal-button-container");
   };
 
   return (
@@ -63,12 +97,13 @@ export default function Component() {
           <Button
             className="w-full bg-[#0070ba] hover:bg-[#003087] text-white"
             onClick={handlePayment}
-            disabled={!amount}
+            disabled={!amount || !paypalLoaded}
           >
             Pay with PayPal
           </Button>
         </CardFooter>
       </Card>
+      <div id="paypal-button-container" className="mt-4"></div>
     </div>
   );
 }
