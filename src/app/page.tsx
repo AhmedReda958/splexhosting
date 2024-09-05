@@ -7,6 +7,8 @@ import {
   Clock,
   Star,
   CheckCircle,
+  Scroll,
+  ScrollIcon,
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -14,6 +16,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Navbar from "./components/navbar";
 import Products from "./components/products";
+import { RiScrollToBottomLine } from "react-icons/ri";
 
 export default function LandingPage() {
   const isVisible = true;
@@ -48,6 +51,9 @@ export default function LandingPage() {
               height={250}
             />
           </div>
+        </div>
+        <div>
+          <RiScrollToBottomLine className="w-6 h-6 text-accent mx-auto mt-8" />
         </div>
       </section>
 
@@ -99,12 +105,14 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <Products />
+      <section id="#products">
+        <Products />
+      </section>
 
       {/* Testimonials Section */}
       <section className="py-20 bg-accent">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center text-accent-foreground mb-12">
+          <h2 className="text-3xl font-bold text-center mb-12">
             What Our Clients Say
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
