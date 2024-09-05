@@ -55,7 +55,7 @@ const faqItems: FAQItem[] = [
 export default function FAQPage() {
   return (
     <div className="min-h-screen bg-background">
-      <div className="container mx-auto py-10">
+      <div className="container mx-auto py-20">
         <h1 className="text-4xl font-bold mb-8 text-center">
           Frequently Asked Questions
         </h1>

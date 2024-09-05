@@ -32,7 +32,6 @@ const navLinks = [
 export default function Navbar() {
   const session = useSession();
   const user = session.data?.user;
-  console.log(user);
 
   const handleSignOut = () => {
     signOut({
@@ -66,6 +65,7 @@ export default function Navbar() {
         <div className="ml-auto flex items-center space-x-4">
           {!user ? (
             <>
+              <DarkModeToggle />
               <Button variant={"outline"} size={"sm"}>
                 Login
               </Button>
