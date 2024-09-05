@@ -138,7 +138,7 @@ export default function LandingPage() {
             ].map((testimonial, index) => (
               <Card key={index}>
                 <CardContent className="pt-6">
-                  <p className="text-gray-600 mb-4">"{testimonial.content}"</p>
+                  <p className="text-gray-600 mb-4">{testimonial.content}</p>
                   <div className="flex items-center">
                     <Avatar className="mr-4">
                       <AvatarImage
