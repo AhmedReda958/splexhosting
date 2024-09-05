@@ -16,10 +16,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Navbar from "./components/navbar";
 import Products from "./components/products";
+import FAQs from "./components/FAQs";
 import { RiScrollToBottomLine } from "react-icons/ri";
 
 export default function LandingPage() {
-  const isVisible = true;
   return (
     <div className="min-h-screen bg-background">
       {/* Header Section */}
@@ -169,7 +169,7 @@ export default function LandingPage() {
       {/* Why Choose Us Section */}
       <section className="py-20">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center text-gray-800 mb-12">
+          <h2 className="text-3xl font-bold text-center mb-12">
             Why Choose ServerPro
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -239,7 +239,8 @@ export default function LandingPage() {
           </Button>
         </div>
       </section>
-
+      {/* FAQs */}
+      <FAQs />
       {/* Footer Section */}
       <footer className="bg-gray-800 text-white py-12">
         <div className="container mx-auto px-4">

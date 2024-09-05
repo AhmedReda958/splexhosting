@@ -4,13 +4,7 @@ import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import {
-  LogOutIcon,
-  LucideServer,
-  MenuIcon,
-  Settings2Icon,
-  User2Icon,
-} from "lucide-react";
+import { LogOutIcon, MenuIcon, User2Icon } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,7 +17,6 @@ import { signOut } from "next-auth/react";
 import DarkModeToggle from "@/components/DarkModeToggle";
 import { Avatar } from "@radix-ui/react-avatar";
 import { AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { RxDashboard } from "react-icons/rx";
 
 const navLinks = [
   { title: "Home", href: "/" },
