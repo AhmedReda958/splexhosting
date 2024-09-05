@@ -1,8 +1,4 @@
-"use client";
-
 import Image from "next/image";
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
 import {
   ChevronRight,
   Server,
@@ -17,34 +13,19 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Navbar from "./components/navbar";
+import Products from "./components/products";
 
 export default function LandingPage() {
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    setIsVisible(true);
-  }, []);
-
-  const fadeIn = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 },
-  };
-
+  const isVisible = true;
   return (
     <div className="min-h-screen bg-background">
       {/* Header Section */}
       <Navbar />
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-4">
+      <section className="pt-20 pb-20 px-4">
         <div className="container mx-auto flex flex-col md:flex-row items-center">
-          <motion.div
-            className="md:w-1/2 mb-8 md:mb-0"
-            initial="hidden"
-            animate={isVisible ? "visible" : "hidden"}
-            variants={fadeIn}
-            transition={{ duration: 0.5 }}
-          >
-            <h1 className="text-4xl md:text-5xl font-bold  mb-4">
+          <div className="md:w-1/2 mb-8 md:mb-0">
+            <h1 className="text-4xl md:text-4xl font-bold  mb-4 ">
               Powerful VPS and Dedicated Servers
             </h1>
             <p className="text-xl mb-10 text-muted-foreground">
@@ -57,23 +38,16 @@ export default function LandingPage() {
                 <ChevronRight className="ml-2" />
               </Button>
             </Link>
-          </motion.div>
-          <motion.div
-            className="md:w-1/2"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={
-              isVisible ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }
-            }
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
+          </div>
+          <div className="md:w-1/2">
             <Image
-              src="/placeholder.svg?height=400&width=600"
+              src={"/imgs/heroSection.svg"}
               alt="Server Illustration"
               className="w-full h-auto"
-              width={600}
-              height={400}
+              width={300}
+              height={250}
             />
-          </motion.div>
+          </div>
         </div>
       </section>
 
@@ -92,110 +66,45 @@ export default function LandingPage() {
                   "Experience unparalleled speed with our optimized infrastructure.",
               },
               {
-                icon: <Shield className="h-8 w-8 text-blue-600" />,
+                icon: <Shield className="h-8 w-8 text-primary" />,
                 title: "Robust Security",
                 description:
                   "Advanced security measures to keep your data safe and secure.",
               },
               {
-                icon: <Clock className="h-8 w-8 text-blue-600" />,
+                icon: <Clock className="h-8 w-8 text-primary" />,
                 title: "24/7 Support",
                 description:
                   "Our expert team is always available to assist you.",
               },
               {
-                icon: <Server className="h-8 w-8 text-blue-600" />,
+                icon: <Server className="h-8 w-8 text-primary" />,
                 title: "Scalable Solutions",
                 description: "Easily scale your resources as your needs grow.",
               },
             ].map((feature, index) => (
-              <motion.div
-                key={index}
-                initial="hidden"
-                animate={isVisible ? "visible" : "hidden"}
-                variants={fadeIn}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-              >
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center">
-                      {feature.icon}
-                      <span className="ml-2">{feature.title}</span>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p>{feature.description}</p>
-                  </CardContent>
-                </Card>
-              </motion.div>
+              <Card key={index}>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    {feature.icon}
+                    <span className="ml-2">{feature.title}</span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p>{feature.description}</p>
+                </CardContent>
+              </Card>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Pricing Section */}
-      <section className="py-20" id="pricing">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center text-gray-800 mb-12">
-            Flexible Pricing Plans
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                name: "Basic",
-                price: "$19",
-                features: ["1 vCPU", "2GB RAM", "20GB SSD", "1TB Transfer"],
-              },
-              {
-                name: "Pro",
-                price: "$49",
-                features: ["2 vCPUs", "4GB RAM", "50GB SSD", "2TB Transfer"],
-              },
-              {
-                name: "Enterprise",
-                price: "$99",
-                features: ["4 vCPUs", "8GB RAM", "100GB SSD", "5TB Transfer"],
-              },
-            ].map((plan, index) => (
-              <motion.div
-                key={index}
-                initial="hidden"
-                animate={isVisible ? "visible" : "hidden"}
-                variants={fadeIn}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-              >
-                <Card>
-                  <CardHeader>
-                    <CardTitle>{plan.name}</CardTitle>
-                    <p className="text-4xl font-bold text-center text-blue-600">
-                      {plan.price}
-                      <span className="text-base font-normal text-gray-600">
-                        /mo
-                      </span>
-                    </p>
-                  </CardHeader>
-                  <CardContent>
-                    <ul className="space-y-2 mb-8">
-                      {plan.features.map((feature, featureIndex) => (
-                        <li key={featureIndex} className="flex items-center">
-                          <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
-                          <span>{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
-                    <Button className="w-full">Choose Plan</Button>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <Products />
 
       {/* Testimonials Section */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-20 bg-accent">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center text-gray-800 mb-12">
+          <h2 className="text-3xl font-bold text-center text-accent-foreground mb-12">
             What Our Clients Say
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -219,41 +128,31 @@ export default function LandingPage() {
                   "As a developer, I appreciate the robust features and excellent support provided by ServerPro.",
               },
             ].map((testimonial, index) => (
-              <motion.div
-                key={index}
-                initial="hidden"
-                animate={isVisible ? "visible" : "hidden"}
-                variants={fadeIn}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-              >
-                <Card>
-                  <CardContent className="pt-6">
-                    <p className="text-gray-600 mb-4">
-                      "{testimonial.content}"
-                    </p>
-                    <div className="flex items-center">
-                      <Avatar className="mr-4">
-                        <AvatarImage
-                          src={`https://i.pravatar.cc/60?img=${index + 1}`}
-                          alt={testimonial.name}
-                        />
-                        <AvatarFallback>
-                          {testimonial.name
-                            .split(" ")
-                            .map((n) => n[0])
-                            .join("")}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <p className="font-semibold">{testimonial.name}</p>
-                        <p className="text-sm text-gray-500">
-                          {testimonial.role}
-                        </p>
-                      </div>
+              <Card key={index}>
+                <CardContent className="pt-6">
+                  <p className="text-gray-600 mb-4">"{testimonial.content}"</p>
+                  <div className="flex items-center">
+                    <Avatar className="mr-4">
+                      <AvatarImage
+                        src={`https://i.pravatar.cc/60?img=${index + 1}`}
+                        alt={testimonial.name}
+                      />
+                      <AvatarFallback>
+                        {testimonial.name
+                          .split(" ")
+                          .map((n) => n[0])
+                          .join("")}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <p className="font-semibold">{testimonial.name}</p>
+                      <p className="text-sm text-gray-500">
+                        {testimonial.role}
+                      </p>
                     </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
+                  </div>
+                </CardContent>
+              </Card>
             ))}
           </div>
         </div>
@@ -268,71 +167,64 @@ export default function LandingPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
               {
-                icon: <Star className="h-8 w-8 text-blue-600" />,
+                icon: <Star className="h-8 w-8 text-primary" />,
                 title: "99.9% Uptime",
                 description:
                   "We guarantee maximum availability for your services.",
               },
               {
-                icon: <Zap className="h-8 w-8 text-blue-600" />,
+                icon: <Zap className="h-8 w-8 text-primary" />,
                 title: "High Performance",
                 description:
                   "Cutting-edge hardware ensures blazing-fast performance.",
               },
               {
-                icon: <Shield className="h-8 w-8 text-blue-600" />,
+                icon: <Shield className="h-8 w-8 text-primary" />,
                 title: "Advanced Security",
                 description:
                   "Multi-layered security approach to protect your data.",
               },
               {
-                icon: <Server className="h-8 w-8 text-blue-600" />,
+                icon: <Server className="h-8 w-8 text-primary" />,
                 title: "Scalable Infrastructure",
                 description: "Easily upgrade or downgrade based on your needs.",
               },
               {
-                icon: <Clock className="h-8 w-8 text-blue-600" />,
+                icon: <Clock className="h-8 w-8 text-primary" />,
                 title: "24/7 Expert Support",
                 description: "Our team is always ready to assist you.",
               },
               {
-                icon: <CheckCircle className="h-8 w-8 text-blue-600" />,
+                icon: <CheckCircle className="h-8 w-8 text-primary" />,
                 title: "30-Day Money-Back",
                 description: "Try our services risk-free with our guarantee.",
               },
             ].map((reason, index) => (
-              <motion.div
-                key={index}
-                initial="hidden"
-                animate={isVisible ? "visible" : "hidden"}
-                variants={fadeIn}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-              >
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center">
-                      {reason.icon}
-                      <span className="ml-2">{reason.title}</span>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p>{reason.description}</p>
-                  </CardContent>
-                </Card>
-              </motion.div>
+              <Card key={index}>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    {reason.icon}
+                    <span className="ml-2">{reason.title}</span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p>{reason.description}</p>
+                </CardContent>
+              </Card>
             ))}
           </div>
         </div>
       </section>
 
       {/* Call-to-Action Section */}
-      <section className="py-20 bg-blue-600">
+      <section className="py-20 bg-primary">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold text-white mb-4">
             Ready to Get Started?
           </h2>
           <p className="text-xl text-blue-100 mb-8">
-            Experience the power of ServerPro's VPS and dedicated servers today!
+            Experience the power of VenixHosting&#39;s VPS and dedicated servers
+            today!
           </p>
           <Button variant="secondary" size="lg">
             Sign Up Now
@@ -345,7 +237,7 @@ export default function LandingPage() {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-              <h3 className="text-xl font-semibold mb-4">ServerPro</h3>
+              <h3 className="text-xl font-semibold mb-4">VenixHosting</h3>
               <p className="text-gray-400">
                 Empowering your digital infrastructure with cutting-edge VPS and
                 dedicated server solutions.
