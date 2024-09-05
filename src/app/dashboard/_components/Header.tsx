@@ -2,6 +2,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import React from "react";
+import { useSession } from "next-auth/react";
 import {
   LuHome,
   LuLineChart,
@@ -30,14 +31,19 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { usePathname } from "next/navigation";
 import DarkModeToggle from "@/components/DarkModeToggle";
 import { signOut } from "next-auth/react";
-import { LogOutIcon } from "lucide-react";
+import { LogOutIcon, User2Icon } from "lucide-react";
 
 const Header = () => {
   const pathname = usePathname();
+
+  const session = useSession();
+  const user = session.data?.user;
+
   const handleSignOut = () => {
     signOut({
       callbackUrl: "/", // Redirect to homepage or any other page after sign out
@@ -149,13 +155,12 @@ const Header = () => {
             size="icon"
             className="overflow-hidden rounded-full"
           >
-            <Image
-              src="/placeholder-user.jpg"
-              width={36}
-              height={36}
-              alt="Avatar"
-              className="overflow-hidden rounded-full"
-            />
+            <Avatar>
+              {user && <AvatarImage src={user.image} alt={user.firstName} />}
+              <AvatarFallback>
+                <User2Icon className="h-6 w-6 text-accent-foreground" />
+              </AvatarFallback>
+            </Avatar>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">

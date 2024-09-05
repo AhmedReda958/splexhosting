@@ -64,13 +64,19 @@ export default function Navbar() {
         </nav>
         <div className="ml-auto flex items-center space-x-4">
           {!user ? (
-            <>
+            <div>
               <DarkModeToggle />
-              <Button variant={"outline"} size={"sm"}>
-                Login
+              <Button
+                variant={"outline"}
+                size={"sm"}
+                className="hidden lg:block"
+              >
+                <Link href="/login">Login</Link>
               </Button>
-              <Button size={"sm"}>Sign Up</Button>
-            </>
+              <Button size={"sm"} className="hidden lg:block">
+                <Link href="/signup">Sign Up</Link>
+              </Button>
+            </div>
           ) : (
             <>
               <DarkModeToggle />
@@ -133,6 +139,12 @@ export default function Navbar() {
                     </Button>
                   </Link>
                 ))}
+                <Button size={"sm"}>
+                  <Link href="/signup">Sign Up</Link>
+                </Button>
+                <Button variant={"outline"} size={"sm"}>
+                  <Link href="/login">Login</Link>
+                </Button>
               </div>
             </SheetContent>
           </Sheet>

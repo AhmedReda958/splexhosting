@@ -67,7 +67,7 @@ const Footer = () => {
               </Link>
 
               <Link
-                href="mailto:support@venix.host"
+                href="https://discord.com/channels/1279394173635657801/1279399742094442569"
                 className=" underline underline-offset-2 hover:text-primary mb-4"
               >
                 <FaDiscord className="h-5 w-5 inline-block mr-2" />

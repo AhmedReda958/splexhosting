@@ -75,7 +75,7 @@ const sidebarItems: SidebarItem[] = [
   {
     icon: BiSupport,
     name: "Support",
-    href: "/dashboard/support",
+    href: "https://discord.com/channels/1279394173635657801/1279399742094442569",
     role: "user",
     position: "bottom",
   },

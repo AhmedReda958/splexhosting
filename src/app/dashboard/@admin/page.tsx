@@ -37,10 +37,12 @@ const HomePage = async () => {
           </Link>
         </Card>
         <Card className=" cursor-pointer">
-          <CardContent className="p-6 pb-8 flex flex-col items-center justify-end font-bold ">
-            <LuPackage className="w-24 h-24 dark:text-blue-400 opacity-50" />
-            <CardTitle className="mt-4">Products</CardTitle>
-          </CardContent>
+          <Link href="/dashboard/products">
+            <CardContent className="p-6 pb-8 flex flex-col items-center justify-end font-bold ">
+              <LuPackage className="w-24 h-24 dark:text-blue-400 opacity-50" />
+              <CardTitle className="mt-4">Products</CardTitle>
+            </CardContent>
+          </Link>
         </Card>
         <Card className=" cursor-pointer">
           <CardContent className="p-6 pb-8 flex flex-col items-center justify-end font-bold ">

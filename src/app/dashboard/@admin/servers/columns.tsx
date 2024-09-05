@@ -14,6 +14,7 @@ import {
 import { LuEye, LuFileEdit, LuTrash } from "react-icons/lu";
 import { DataTableColumnHeader } from "@/components/tables/DataTableColumnHeader";
 import { Server } from "@prisma/client";
+import Link from "next/link";
 
 export const columns: ColumnDef<Server>[] = [
   {
@@ -85,10 +86,12 @@ export const columns: ColumnDef<Server>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem>
-              <LuEye className="w-4 h-4 mr-2" />
-              View Server
-            </DropdownMenuItem>
+            <Link href={`/dashboard/servers/${server.id}`}>
+              <DropdownMenuItem>
+                <LuEye className="w-4 h-4 mr-2" />
+                View Server
+              </DropdownMenuItem>
+            </Link>
             <DropdownMenuItem>
               <LuFileEdit className="w-4 h-4 mr-2" />
               Update Server
