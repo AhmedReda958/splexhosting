@@ -1,17 +1,7 @@
 import Link from "next/link";
 import { FaDiscord } from "react-icons/fa";
-import {
-  ChevronRight,
-  Server,
-  Shield,
-  Zap,
-  Clock,
-  Star,
-  CheckCircle,
-  Scroll,
-  ScrollIcon,
-  Mail,
-} from "lucide-react";
+import { Mail } from "lucide-react";
+import Image from "next/image";
 
 const Footer = () => {
   return (
@@ -19,7 +9,10 @@ const Footer = () => {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
-            <h3 className="text-xl font-semibold mb-4">VenixHosting</h3>
+            <h3 className="flex gap-2 text-xl font-semibold mb-4">
+              <Image src="/logo.png" alt="Logo" width={30} height={30} />
+              VenixHosting
+            </h3>
             <p className="text-gray-400">
               Empowering your digital infrastructure with cutting-edge VPS and
               dedicated server solutions.
