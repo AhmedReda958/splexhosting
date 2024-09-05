@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Recursive } from "next/font/google";
+
 import "./globals.css";
 import DarkThemeProvider from "@/components/providers/theme-provider";
 import { Session } from "next-auth";
 import AuthSessionProvider from "@/components/providers/authSessionProvider";
 
-const inter = Inter({ subsets: ["latin"] });
+const RecursiveFont = Recursive({
+  subsets: ["latin"], // specify the required subsets
+});
 
 export const metadata: Metadata = {
   title: "VenixHosting",
@@ -21,7 +24,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={RecursiveFont.className}>
         <DarkThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <AuthSessionProvider session={session}>
             {children}

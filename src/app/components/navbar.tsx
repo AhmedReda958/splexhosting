@@ -47,7 +47,7 @@ export default function Navbar() {
   };
 
   return (
-    <header className="flex h-16 w-full items-center border-b border-gray-200 dark:border-gray-800">
+    <header className="flex h-16 w-full items-center bg-background ">
       <div className="container mx-auto flex w-full items-center px-4 md:px-6">
         <Link href="#" className="mr-6 flex items-center" prefetch={false}>
           <Image src="/logo.png" alt="VenixHosting" width={32} height={32} />

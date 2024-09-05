@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
@@ -30,7 +31,7 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-100 to-white">
+    <div className="min-h-screen bg-background">
       {/* Header Section */}
       <Navbar />
       {/* Hero Section */}
@@ -43,17 +44,19 @@ export default function LandingPage() {
             variants={fadeIn}
             transition={{ duration: 0.5 }}
           >
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+            <h1 className="text-4xl md:text-5xl font-bold  mb-4">
               Powerful VPS and Dedicated Servers
             </h1>
-            <p className="text-xl text-gray-600 mb-8">
+            <p className="text-xl mb-10 text-muted-foreground">
               Experience lightning-fast performance and unmatched reliability
               for your applications.
             </p>
-            <Button size="lg" className="flex items-center">
-              Get Hosting Now
-              <ChevronRight className="ml-2" />
-            </Button>
+            <Link href={"/servers"}>
+              <Button size="lg" className="flex items-center">
+                Get Server Now
+                <ChevronRight className="ml-2" />
+              </Button>
+            </Link>
           </motion.div>
           <motion.div
             className="md:w-1/2"
@@ -63,25 +66,27 @@ export default function LandingPage() {
             }
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <img
+            <Image
               src="/placeholder.svg?height=400&width=600"
               alt="Server Illustration"
               className="w-full h-auto"
+              width={600}
+              height={400}
             />
           </motion.div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="py-20 bg-gray-50" id="services">
+      <section className="py-20 bg-accent" id="services">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center text-gray-800 mb-12">
+          <h2 className="text-3xl font-bold text-center mb-12">
             Our Key Features
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
               {
-                icon: <Zap className="h-8 w-8 text-blue-600" />,
+                icon: <Zap className="h-8 w-8 text-primary" />,
                 title: "Lightning Fast",
                 description:
                   "Experience unparalleled speed with our optimized infrastructure.",
