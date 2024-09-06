@@ -18,9 +18,9 @@ import DarkModeToggle from "@/components/DarkModeToggle";
 import { Avatar } from "@radix-ui/react-avatar";
 import { AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-const navLinks = [
+export const navLinks = [
   { title: "Home", href: "/" },
-  { title: "Services", href: "#services" },  
+  { title: "Services", href: "/#services" },  
   { title: "Hardware", href: "/hardware" },
   {
     title: "Discord",

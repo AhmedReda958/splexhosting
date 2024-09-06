@@ -2,6 +2,7 @@ import Link from "next/link";
 import { FaDiscord } from "react-icons/fa";
 import { Mail } from "lucide-react";
 import Image from "next/image";
+import { navLinks } from "./navbar";
 
 const Footer = () => {
   return (
@@ -22,36 +23,14 @@ const Footer = () => {
             <h3 className="text-xl font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2">
               <li>
-                <Link
-                  href="/"
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="#services"
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  Services
-                </Link>
-              </li>              
-              <li>
-                <Link
-                  href="/terms"
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  Terms of Services
-                </Link>
-              </li>
-			  <li>
-                <Link
-                  href="/privacy"
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  Privacy Policy
-                </Link>
+{navLinks.map((link)=>
+ <Link
+ href={link.href}
+ className="text-gray-400 hover:text-white transition-colors"
+>
+ {link.title}
+</Link>
+)               }
               </li>
             </ul>
           </div>
