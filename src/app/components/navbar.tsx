@@ -64,7 +64,7 @@ export default function Navbar() {
         </nav>
         <div className="ml-auto flex items-center space-x-4">
           {!user ? (
-            <div>
+            <div className="flex gap-2 items-center">
               <DarkModeToggle />
               <Button
                 variant={"outline"}
@@ -139,12 +139,17 @@ export default function Navbar() {
                     </Button>
                   </Link>
                 ))}
-                <Button size={"sm"}>
-                  <Link href="/signup">Sign Up</Link>
-                </Button>
-                <Button variant={"outline"} size={"sm"}>
-                  <Link href="/login">Login</Link>
-                </Button>
+                {!user && (
+                  <>
+                    {" "}
+                    <Button size={"sm"}>
+                      <Link href="/signup">Sign Up</Link>
+                    </Button>
+                    <Button variant={"outline"} size={"sm"}>
+                      <Link href="/login">Login</Link>
+                    </Button>
+                  </>
+                )}
               </div>
             </SheetContent>
           </Sheet>
