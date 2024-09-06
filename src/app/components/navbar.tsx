@@ -20,12 +20,11 @@ import { AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const navLinks = [
   { title: "Home", href: "/" },
-  { title: "About", href: "/about" },
-  { title: "Services", href: "/services" },
-  { title: "Contact", href: "/contact" },
+  { title: "Services", href: "#services" },  
+  { title: "Hardware", href: "/hardware" },
   {
     title: "Discord",
-    href: "https://discord.com/channels/1279394173635657801/1279399742094442569",
+    href: "https://discord.gg/xArPtPPsvY",
   },
 ];
 

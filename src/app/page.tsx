@@ -37,7 +37,7 @@ export default function LandingPage() {
               Experience lightning-fast performance and unmatched reliability
               for your applications.
             </p>
-            <Link href={"/servers"}>
+            <Link href={"/signup"}>
               <Button size="lg" className="flex items-center">
                 Get Server Now
                 <ChevronRight className="ml-2" />
@@ -110,75 +110,18 @@ export default function LandingPage() {
       <section id="#products">
         <Products />
       </section>
-
-      {/* Testimonials Section */}
-      <section className="py-20 bg-accent">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12">
-            What Our Clients Say
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              {
-                name: "John Doe",
-                role: "CEO, Tech Startup",
-                content:
-                  "ServerPro has been a game-changer for our business. The performance and reliability are unmatched.",
-              },
-              {
-                name: "Jane Smith",
-                role: "CTO, E-commerce Platform",
-                content:
-                  "The scalability of ServerPro's solutions has allowed us to grow without worrying about infrastructure.",
-              },
-              {
-                name: "Mike Johnson",
-                role: "Developer",
-                content:
-                  "As a developer, I appreciate the robust features and excellent support provided by ServerPro.",
-              },
-            ].map((testimonial, index) => (
-              <Card key={index}>
-                <CardContent className="pt-6">
-                  <p className="text-gray-600 mb-4">{testimonial.content}</p>
-                  <div className="flex items-center">
-                    <Avatar className="mr-4">
-                      <AvatarImage
-                        src={`https://i.pravatar.cc/60?img=${index + 1}`}
-                        alt={testimonial.name}
-                      />
-                      <AvatarFallback>
-                        {testimonial.name
-                          .split(" ")
-                          .map((n) => n[0])
-                          .join("")}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <p className="font-semibold">{testimonial.name}</p>
-                      <p className="text-sm text-gray-500">
-                        {testimonial.role}
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
+      
       {/* Why Choose Us Section */}
       <section className="py-20">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-12">
-            Why Choose ServerPro
+            Why Choose VenixHosting
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
               {
                 icon: <Star className="h-8 w-8 text-primary" />,
-                title: "99.9% Uptime",
+                title: "99.8% Uptime",
                 description:
                   "We guarantee maximum availability for your services.",
               },
@@ -206,7 +149,7 @@ export default function LandingPage() {
               },
               {
                 icon: <CheckCircle className="h-8 w-8 text-primary" />,
-                title: "30-Day Money-Back",
+                title: "1-Day Money-Back",
                 description: "Try our services risk-free with our guarantee.",
               },
             ].map((reason, index) => (
@@ -236,9 +179,11 @@ export default function LandingPage() {
             Experience the power of VenixHosting&#39;s VPS and dedicated servers
             today!
           </p>
+		  <Link href={"/signup"}>
           <Button variant="secondary" size="lg">
             Sign Up Now
           </Button>
+		 </Link>
         </div>
       </section>
       {/* FAQs */}

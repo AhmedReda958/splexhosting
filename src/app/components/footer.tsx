@@ -36,21 +36,21 @@ const Footer = () => {
                 >
                   Services
                 </Link>
-              </li>
+              </li>              
               <li>
                 <Link
-                  href="#pricing"
+                  href="/terms"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
-                  Pricing
+                  Terms of Services
                 </Link>
               </li>
-              <li>
+			  <li>
                 <Link
-                  href="#contact"
+                  href="/privacy"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
-                  Contact
+                  Privacy Policy
                 </Link>
               </li>
             </ul>
@@ -67,7 +67,7 @@ const Footer = () => {
               </Link>
 
               <Link
-                href="https://discord.com/channels/1279394173635657801/1279399742094442569"
+                href="https://discord.gg/xArPtPPsvY"
                 className=" underline underline-offset-2 hover:text-primary mb-4"
               >
                 <FaDiscord className="h-5 w-5 inline-block mr-2" />
