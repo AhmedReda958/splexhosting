@@ -1,3 +1,4 @@
+"use client"
 import Link from "next/link";
 import { FaDiscord } from "react-icons/fa";
 import { Mail } from "lucide-react";
@@ -26,7 +27,7 @@ const Footer = () => {
 {navLinks.map((link)=>
  <Link
  href={link.href}
- className="text-gray-400 hover:text-white transition-colors"
+ className="text-gray-400 hover:text-white transition-colors block"
 >
  {link.title}
 </Link>
