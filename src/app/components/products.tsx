@@ -55,14 +55,10 @@ export default async function Products() {
         </TabsContent>
         <TabsContent value="dedicated">
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {products
+          {products
               .filter((product) => product.type == "dedicated")
               .map((product) => (
-                <ProductCard
-                  key={product.name}
-                  product={product}
-                  type="Dedicated"
-                />
+                <ProductCard key={product.id} product={product} type="Dedicated" />
               ))}
           </div>
         </TabsContent>
