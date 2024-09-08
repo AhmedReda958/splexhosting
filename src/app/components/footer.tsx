@@ -26,6 +26,7 @@ const Footer = () => {
               <li>
 {navLinks.map((link)=>
  <Link
+ key={link.title}
  href={link.href}
  className="text-gray-400 hover:text-white transition-colors block"
 >
