@@ -72,14 +72,18 @@ export default function PaypalPayButtons({ amount }: { amount: number }) {
         // Order is successful
         // Your custom code
         // Like showing a success toast:
-        toast({ title: "Amount Added to Wallet" });
+        console.log("Data:", data);
+        toast({
+          title: "Amount Added to Wallet",
+          description: `${amount} EUR To your Wallet your balace now is ${data.credits}EUR`,
+        });
         // And/Or Adding Balance to Redux Wallet
         // dispatch(setWalletBalance({ balance: data.data.wallet.balance }));
       }
     } catch (err) {
       toast({
         title: "Some Error Occured",
-        description: err,
+        description: err as string,
         variant: "destructive",
       });
       console.error("Fetch Error:", err);

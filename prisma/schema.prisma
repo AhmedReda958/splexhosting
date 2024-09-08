@@ -76,7 +76,7 @@ model Inovice {
   id         Int      @id @default(autoincrement())
   amount     Int
   userId     Int
-  paymentId  String
+  paymentId  String   @unique
   description String?
   paymentMethod String?
   status     String   @default("pending")

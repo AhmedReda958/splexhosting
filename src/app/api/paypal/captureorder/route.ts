@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import client from "@/utils/paypal";
 import paypal from "@paypal/checkout-server-sdk";
+import prisma from "@/lib/prisma";
 
 export async function POST(req: Request) {
   try {
@@ -18,20 +19,41 @@ export async function POST(req: Request) {
     const request = new paypal.orders.OrdersGetRequest(orderID);
     const response = await PaypalClient.execute(request);
 
-    if (!response || response.statusCode !== 201) {
+    if (!response) {
       console.log("Response:", response);
       return NextResponse.json(
         { success: false, message: "Some Error Occurred at backend" },
         { status: 500 }
       );
     }
-    // console.log("Response:", response);
-    // Your Custom Code to Update Order Status
-    // And Other stuff that is related to that order, like wallet
-    // Example: Update wallet and send it back to frontend
-    const wallet = {}; // Example: replace this with your actual wallet update logic
+    const order = await prisma.inovice.update({
+      where: { paymentId: orderID },
+      data: {
+        status: "success",
+      },
+      select: {
+        id: true,
+        userId: true,
+        amount: true,
+      },
+    });
 
-    return NextResponse.json({ success: true, data: { wallet } });
+    const user = await prisma.user.update({
+      where: { id: order.userId },
+      data: {
+        credits: {
+          increment: order.amount,
+        },
+      },
+      select: {
+        credits: true,
+      },
+    });
+
+    return NextResponse.json(
+      { success: true, credits: user.credits },
+      { status: 201 }
+    );
   } catch (err) {
     if ((err as any).statusCode === 422) {
       console.log("Compliance Violation Error:", err);

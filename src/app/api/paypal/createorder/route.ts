@@ -46,6 +46,7 @@ export async function POST(req: Request) {
         paymentId: response.result.id,
         amount: amount,
         description: `Charge Credits balance with ${amount}EUR`,
+        paymentMethod: "paypal",
       },
     });
 
