@@ -12,7 +12,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
             <h3 className="flex gap-2 text-xl font-semibold mb-4">
-              <Image src="/logo.png" alt="Logo" width={30} height={30} />
+              <Image src="/favicon.ico" alt="Logo" width={30} height={30} />
               VenixHosting
             </h3>
             <p className="text-gray-400">

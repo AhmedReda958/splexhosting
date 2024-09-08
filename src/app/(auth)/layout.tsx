@@ -11,7 +11,7 @@ function AuthLayout({ children }: { children: React.ReactNode }) {
           href="/"
           className="flex items-center justify-center gap-1 text-xl font-bold "
         >
-          <Image src="/logo.png" alt="Logo" width={30} height={30} />
+          <Image src="/favicon.ico" alt="Logo" width={30} height={30} />
           VenixHosting
         </Link>
         {/* <Button as={Link}>home</Button> */}

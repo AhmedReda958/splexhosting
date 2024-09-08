@@ -122,7 +122,7 @@ const Sidebar = () => {
         <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
           <Link href="/" className="h-9 w-9 text-center">
             <Image
-              src={"/logo.png"}
+              src={"/favicon.ico"}
               alt="VenixHosting"
               width={32}
               height={32}
