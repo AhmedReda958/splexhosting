@@ -22,6 +22,8 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   servers       Server[]
+  oreders       Order[]
+  invoices      Inovice[]
 }
 
 model Server {
@@ -56,4 +58,28 @@ model Product {
   storage     Int?
   status      String   @default("pending")
   createdAt   DateTime @default(now())
+  orders      Order[]
+}
+
+model Order {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  productId  Int
+  status     String   @default("pending")
+  createdAt  DateTime @default(now())
+  expiresAt  DateTime
+  user       User     @relation(fields: [userId], references: [id])
+  product    Product  @relation(fields: [productId], references: [id])
+}
+
+model Inovice {
+  id         Int      @id @default(autoincrement())
+  amount     Int
+  userId     Int
+  paymentId  String
+  description String?
+  paymentMethod String?
+  status     String   @default("pending")
+  createdAt  DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
 }

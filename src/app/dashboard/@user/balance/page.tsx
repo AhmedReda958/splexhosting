@@ -11,9 +11,12 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { CreditCard, DollarSign } from "lucide-react";
-import { PayPalButtons } from "@paypal/react-paypal-js";
+import { useState } from "react";
+import PaypalPayButtons from "@/components/PaypalPayButtons";
 
-export default function Component() {
+export default function BalancePage() {
+  const [amount, setAmount] = useState(0);
+
   return (
     <div className="col-span-full">
       <Card className="w-full max-w-md mx-auto">
@@ -32,20 +35,22 @@ export default function Component() {
             </div>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="amount">Amount to add</Label>
+            <Label htmlFor="amount">Amount to add {amount}EUR</Label>
             <div className="relative">
               <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" />
               <Input
                 id="amount"
                 type="number"
+                value={amount}
                 placeholder="Enter amount"
                 className="pl-10"
+                onChange={(e) => setAmount(Number(e.target.value))}
               />
             </div>
           </div>
         </CardContent>
         <CardFooter className="block">
-          <PayPalButtons />
+          <PaypalPayButtons amount={amount} />
         </CardFooter>
       </Card>
       <div id="paypal-button-container" className="mt-4"></div>

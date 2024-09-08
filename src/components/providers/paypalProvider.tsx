@@ -7,7 +7,7 @@ export const PayPalProvider = ({ children }: { children: React.ReactNode }) => {
     <PayPalScriptProvider
       options={{
         clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID ?? "",
-        currency: "USD",
+        currency: "EUR",
         intent: "capture",
       }}
     >

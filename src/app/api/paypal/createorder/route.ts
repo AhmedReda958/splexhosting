@@ -1,20 +1,20 @@
-// app/api/create-order/route.ts
-
 import { NextResponse } from "next/server";
 import client from "@/utils/paypal";
 import paypal from "@paypal/checkout-server-sdk";
+import prisma from "@/lib/prisma";
 
 export async function POST(req: Request) {
   try {
-    const { order_price, user_id } = await req.json();
+    const { amount, userId } = await req.json();
+    console.log("Amount: ", amount);
+    console.log("User ID: ", userId);
 
-    if (!order_price || !user_id) {
+    if (!amount || !userId) {
       return NextResponse.json(
-        { success: false, message: "Please Provide order_price And User ID" },
+        { success: false, message: "Please Provide amount And User ID" },
         { status: 400 }
       );
     }
-
     const PaypalClient = client();
     const request = new paypal.orders.OrdersCreateRequest();
     request.headers["Prefer"] = "return=representation";
@@ -23,8 +23,8 @@ export async function POST(req: Request) {
       purchase_units: [
         {
           amount: {
-            currency_code: "USD",
-            value: order_price.toString(),
+            currency_code: "EUR",
+            value: amount.toString(),
           },
         },
       ],
@@ -40,13 +40,19 @@ export async function POST(req: Request) {
       );
     }
 
-    // Your Custom Code for doing something with the order
-    // Usually, you would store an order in the database like MongoDB
+    const order = await prisma.inovice.create({
+      data: {
+        userId: Number(userId),
+        paymentId: response.result.id,
+        amount: amount,
+        description: `Charge Credits balance with ${amount}EUR`,
+      },
+    });
 
-    // Example:
-    const order = response.result;
-
-    return NextResponse.json({ success: true, data: { order } });
+    return NextResponse.json(
+      { success: true, data: { order } },
+      { status: 201 }
+    );
   } catch (err) {
     console.log("Err at Create Order: ", err);
     return NextResponse.json(

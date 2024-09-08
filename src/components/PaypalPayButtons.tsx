@@ -1,9 +1,17 @@
 "use client";
 
+import { useToast } from "@/hooks/use-toast";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import { useSession } from "next-auth/react";
+import { useEffect, useCallback } from "react";
 
-export default function PaypalButtons() {
-  const paypalCreateOrder = async () => {
+export default function PaypalPayButtons({ amount }: { amount: number }) {
+  const session = useSession();
+  const user = session.data?.user;
+
+  const { toast } = useToast();
+
+  const paypalCreateOrder = useCallback(async () => {
     try {
       const response = await fetch("/api/paypal/createorder", {
         method: "POST",
@@ -11,8 +19,8 @@ export default function PaypalButtons() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          user_id: 1,
-          order_price: 120,
+          userId: user.id,
+          amount: 20,
         }),
       });
 
@@ -20,22 +28,23 @@ export default function PaypalButtons() {
         // Handle HTTP errors
         const errorData = await response.json();
         console.error("Error:", errorData.message);
-        // Your custom code to show an error like showing a toast:
-        // toast.error('Some Error Occured');
+
+        toast({ title: "Some Error Occured", variant: "destructive" });
         return null;
       }
 
       const data = await response.json();
-      return data.data.order.order_id;
+      console.log(data.data.order.paymentId);
+      return data.data.order.paymentId;
     } catch (err) {
-      // Your custom code to show an error like showing a toast:
-      // toast.error('Some Error Occured');
+      toast({ title: "Some Error Occured", variant: "destructive" });
+
       console.error("Fetch Error:", err);
       return null;
     }
-  };
+  }, [amount, toast, user]);
 
-  const paypalCaptureOrder = async (orderID) => {
+  const paypalCaptureOrder = async ({ orderID }: { orderID: string }) => {
     try {
       const response = await fetch("/api/paypal/captureorder", {
         method: "POST",
@@ -49,8 +58,11 @@ export default function PaypalButtons() {
         // Handle HTTP errors
         const errorData = await response.json();
         console.error("Error:", errorData.message);
-        // Your custom code to show an error like showing a toast:
-        // toast.error('Some Error Occured');
+        toast({
+          title: "Some Error Occured",
+          description: errorData.message,
+          variant: "destructive",
+        });
         return;
       }
 
@@ -60,16 +72,16 @@ export default function PaypalButtons() {
         // Order is successful
         // Your custom code
         // Like showing a success toast:
-        // toast.success('Amount Added to Wallet');
+        toast({ title: "Amount Added to Wallet" });
         // And/Or Adding Balance to Redux Wallet
         // dispatch(setWalletBalance({ balance: data.data.wallet.balance }));
       }
     } catch (err) {
-      // Order is not successful
-      // Your custom code
-
-      // Like showing an error toast
-      // toast.error('Some Error Occured');
+      toast({
+        title: "Some Error Occured",
+        description: err,
+        variant: "destructive",
+      });
       console.error("Fetch Error:", err);
     }
   };
@@ -86,10 +98,7 @@ export default function PaypalButtons() {
         let order_id = await paypalCreateOrder();
         return order_id + "";
       }}
-      onApprove={async (data, actions) => {
-        let response = await paypalCaptureOrder(data.orderID);
-        if (response) return true;
-      }}
+      onApprove={paypalCaptureOrder}
     />
   );
 }
