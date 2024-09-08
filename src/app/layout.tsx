@@ -5,6 +5,7 @@ import "./globals.css";
 import DarkThemeProvider from "@/components/providers/theme-provider";
 import { Session } from "next-auth";
 import AuthSessionProvider from "@/components/providers/authSessionProvider";
+import { PayPalProvider } from "@/components/providers/paypalProvider";
 
 const RecursiveFont = Recursive({
   subsets: ["latin"], // specify the required subsets
@@ -27,7 +28,7 @@ export default function RootLayout({
       <body className={RecursiveFont.className}>
         <DarkThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <AuthSessionProvider session={session}>
-            {children}
+            <PayPalProvider>{children}</PayPalProvider>
           </AuthSessionProvider>
         </DarkThemeProvider>
       </body>
