@@ -56,7 +56,7 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json(
-      { success: true, credits: user.credits },
+      { success: true, credits: user.credits, id: order.id },
       { status: 201 }
     );
   } catch (err) {

@@ -4,12 +4,14 @@ import { useToast } from "@/hooks/use-toast";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { useSession } from "next-auth/react";
 import { useEffect, useCallback, use } from "react";
+import { useRouter } from "next/navigation";
 
 export default function PaypalPayButtons({ amount }: { amount: number }) {
   const session = useSession();
   const user = session.data?.user;
 
   const { toast } = useToast();
+  const router = useRouter();
 
   const paypalCreateOrder = useCallback(async () => {
     try {
@@ -34,7 +36,6 @@ export default function PaypalPayButtons({ amount }: { amount: number }) {
       }
 
       const data = await response.json();
-      console.log(data.data.order.paymentId);
       return data.data.order.paymentId;
     } catch (err) {
       toast({ title: "Some Error Occured", variant: "destructive" });
@@ -65,20 +66,15 @@ export default function PaypalPayButtons({ amount }: { amount: number }) {
         });
         return;
       }
-
       const data = await response.json();
 
       if (data.success) {
         // Order is successful
-        // Your custom code
-        // Like showing a success toast:
-        console.log("Data:", data);
         toast({
           title: "Amount Added to Wallet",
           description: `${amount} EUR To your Wallet your balace now is ${data.credits}EUR`,
         });
-        // And/Or Adding Balance to Redux Wallet
-        // dispatch(setWalletBalance({ balance: data.data.wallet.balance }));
+        router.push(`/dashboard/invoices/${data.id}`);
       }
     } catch (err) {
       toast({
