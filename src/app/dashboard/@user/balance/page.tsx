@@ -15,7 +15,8 @@ import { useState } from "react";
 import PaypalPayButtons from "@/components/PaypalPayButtons";
 
 export default function BalancePage() {
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState(20);
+  const [showPaypal, setShowPaypal] = useState(false);
 
   return (
     <div className="col-span-full">
@@ -35,22 +36,38 @@ export default function BalancePage() {
             </div>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="amount">Amount to add {amount}EUR</Label>
-            <div className="relative">
-              <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" />
-              <Input
-                id="amount"
-                type="number"
-                value={amount}
-                placeholder="Enter amount"
-                className="pl-10"
-                onChange={(e) => setAmount(Number(e.target.value))}
-              />
-            </div>
+            <Label htmlFor="amount">Amount to add {amount} EUR</Label>
+            {!showPaypal ? (
+              <div className="relative">
+                <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" />
+                <Input
+                  id="amount"
+                  type="number"
+                  value={amount}
+                  placeholder="Enter amount"
+                  className="pl-10"
+                  onChange={(e) => setAmount(Number(e.target.value))}
+                />
+              </div>
+            ) : (
+              <PaypalPayButtons amount={amount} />
+            )}
           </div>
         </CardContent>
         <CardFooter className="block">
-          <PaypalPayButtons amount={amount} />
+          {!showPaypal ? (
+            <Button onClick={() => setShowPaypal(true)} className="w-full">
+              Add Credits
+            </Button>
+          ) : (
+            <Button
+              onClick={() => setShowPaypal(false)}
+              className="w-full"
+              variant="link"
+            >
+              Cancel
+            </Button>
+          )}
         </CardFooter>
       </Card>
       <div id="paypal-button-container" className="mt-4"></div>

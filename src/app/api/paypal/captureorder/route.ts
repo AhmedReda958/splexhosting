@@ -4,9 +4,8 @@ import paypal from "@paypal/checkout-server-sdk";
 import prisma from "@/lib/prisma";
 
 export async function POST(req: Request) {
+  const { orderID } = await req.json();
   try {
-    const { orderID } = await req.json();
-
     if (!orderID) {
       return NextResponse.json(
         { success: false, message: "Please Provide Order ID" },
@@ -21,6 +20,12 @@ export async function POST(req: Request) {
 
     if (!response) {
       console.log("Response:", response);
+      const cancledOrder = await prisma.inovice.update({
+        where: { paymentId: orderID },
+        data: {
+          status: "failed",
+        },
+      });
       return NextResponse.json(
         { success: false, message: "Some Error Occurred at backend" },
         { status: 500 }
@@ -55,6 +60,13 @@ export async function POST(req: Request) {
       { status: 201 }
     );
   } catch (err) {
+    const cancledOrder = await prisma.inovice.update({
+      where: { paymentId: orderID },
+      data: {
+        status: "failed",
+      },
+    });
+
     if ((err as any).statusCode === 422) {
       console.log("Compliance Violation Error:", err);
       return NextResponse.json(

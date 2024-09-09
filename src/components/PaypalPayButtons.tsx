@@ -3,7 +3,7 @@
 import { useToast } from "@/hooks/use-toast";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { useSession } from "next-auth/react";
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, use } from "react";
 
 export default function PaypalPayButtons({ amount }: { amount: number }) {
   const session = useSession();
@@ -20,7 +20,7 @@ export default function PaypalPayButtons({ amount }: { amount: number }) {
         },
         body: JSON.stringify({
           userId: user.id,
-          amount: 20,
+          amount,
         }),
       });
 
