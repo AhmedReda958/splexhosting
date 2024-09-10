@@ -14,7 +14,7 @@ import { Label } from "@/components/ui/label";
 
 import { useState } from "react";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
@@ -24,6 +24,9 @@ const SignUp = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const redirect = searchParams.get("redirect") || "/dashboard";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -58,7 +61,7 @@ const SignUp = () => {
           if (result?.error) {
             setError(result.error);
           } else if (result?.ok) {
-            router.push("/dashboard"); // Redirect to homepage or any protected page
+            router.push(redirect); // Redirect to homepage or any protected page
           }
         } catch (err) {
           console.log(err);

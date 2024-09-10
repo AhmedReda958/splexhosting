@@ -125,10 +125,12 @@ const ServerPage = async ({ params }: { params: { id: string } }) => {
             </div>
           </CardContent>
         </Card>
-        <div className="mt-6">
-          <h2 className="text-2xl font-bold mb-4">Server Controls</h2>
-          <ServerControls server={serverData} />
-        </div>
+        {serverData.type === "vps" && (
+          <div className="mt-6">
+            <h2 className="text-2xl font-bold mb-4">Server Controls</h2>
+            <ServerControls server={serverData} />
+          </div>
+        )}
       </div>
     </>
   );
