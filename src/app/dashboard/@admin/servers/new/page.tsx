@@ -404,10 +404,12 @@ export default function AddServerPage({
                       <SelectValue placeholder="Select cores" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="i9">I9 CPU </SelectItem>
-                      <SelectItem value="i7">I7 CPU</SelectItem>
-                      <SelectItem value="i5">I5 CPU</SelectItem>
-                      <SelectItem value="i3">I3 CPU</SelectItem>
+                      <SelectItem value="i9">Intel Core i9-10900K </SelectItem>
+                      <SelectItem value="i9-2">Intel Core i9-13900K </SelectItem>
+                      <SelectItem value="i7">Intel Core i7-7700 </SelectItem>
+                      <SelectItem value="amd-1">AMD Ryzen™ 9 5900X </SelectItem>
+                      <SelectItem value="amd-2">AMD Ryzen™ 9 5950X </SelectItem>
+                      <SelectItem value="amd-3">AMD Epyc 7402P </SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
