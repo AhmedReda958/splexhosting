@@ -18,8 +18,10 @@ import {
   RefreshCwIcon,
   PackageIcon,
   GlobeIcon,
+  Info,
 } from "lucide-react";
 import ServerControls from "./serverControls";
+import Link from "next/link";
 
 const ServerPage = async ({ params }: { params: { id: string } }) => {
   const id = parseInt(params.id);
@@ -59,9 +61,13 @@ const ServerPage = async ({ params }: { params: { id: string } }) => {
                   )}
                 </CardDescription>
               </div>
-              <Badge variant="secondary" className="text-lg">
-                {/* {serverData.plan ? serverData.plan :  */}
-                Custom server
+              <Badge
+                variant="secondary"
+                className={`${
+                  serverData.status == "pending" && "text-yellow-400"
+                }`}
+              >
+                {serverData.status}
               </Badge>
             </div>
           </CardHeader>
@@ -125,10 +131,19 @@ const ServerPage = async ({ params }: { params: { id: string } }) => {
             </div>
           </CardContent>
         </Card>
-        {serverData.type === "vps" && (
+        {serverData.type === "vps" && serverData.status != "pending" && (
           <div className="mt-6">
             <h2 className="text-2xl font-bold mb-4">Server Controls</h2>
             <ServerControls server={serverData} />
+          </div>
+        )}
+        {serverData.status == "pending" && (
+          <div className="mt-6">
+            <p className="flex gap-2 ">
+              <Info className="w-5 h-5" />
+              Your server is currently under review and will be activated
+              shortly.
+            </p>
           </div>
         )}
       </div>

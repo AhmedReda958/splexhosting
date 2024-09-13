@@ -12,8 +12,10 @@ const ServerCard = ({ server }: { server: Server }) => {
       <Card>
         <CardContent className="p-4  shadow-md rounded-lg flex gap-6">
           <div className="flex-shrink-0">
-            {true ? (
+            {server.status === "active" ? (
               <LuServer className="w-16 h-16 text-green-600 dark:text-green-400 " />
+            ) : server.status === "pending" ? (
+              <LuServerOff className="w-16 h-16 text-yellow-500 dark:text-yellow-400" />
             ) : (
               <LuServerOff className="w-16 h-16 text-gray-600" />
             )}
@@ -26,9 +28,13 @@ const ServerCard = ({ server }: { server: Server }) => {
             <p className="text-sm">Storage: {server.storage}</p>
             <p className="text-sm ">
               Status:{" "}
-              {true ? (
+              {server.status === "active" ? (
                 <span className="font-bold text-green-500 dark:text-green-400">
                   Online
+                </span>
+              ) : server.status === "pending" ? (
+                <span className="font-bold text-yellow-500 dark:text-yellow-400">
+                  Pending
                 </span>
               ) : (
                 <span className="font-bold text-red-500 dark:text-red-400">

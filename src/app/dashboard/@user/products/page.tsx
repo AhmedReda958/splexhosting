@@ -11,6 +11,7 @@ import { TabsTrigger, TabsList, TabsContent, Tabs } from "@/components/ui/tabs";
 import prisma from "@/lib/prisma";
 import { Product } from "@prisma/client";
 import { Check } from "lucide-react";
+import Link from "next/link";
 
 async function getProducts() {
   try {
@@ -101,7 +102,11 @@ function ProductCard({ product, type }: { product: Product; type: string }) {
         </ul>
       </CardContent>
       <CardFooter>
-        <Button className="w-full">Choose {type}</Button>
+        <Button className="w-full" asChild>
+          <Link href={`/complete-server-order?productId=${product.id}`}>
+            Choose {type}
+          </Link>
+        </Button>
       </CardFooter>
     </Card>
   );

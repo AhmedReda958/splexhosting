@@ -60,8 +60,12 @@ export default async function UserInvoicesPage() {
                     </Badge>
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold">
-                      ${invoice.amount.toFixed(2)}
+                    <div
+                      className={`text-2xl font-bold ${
+                        invoice.amount < 0 ? "text-red-400" : "text-green-400"
+                      }`}
+                    >
+                      {invoice.amount.toFixed(2)} EUR
                     </div>
                     <p className="text-xs text-muted-foreground">
                       {invoice.description}

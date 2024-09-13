@@ -6,7 +6,17 @@ import { useSession } from "next-auth/react";
 import { useEffect, useCallback, use } from "react";
 import { useRouter } from "next/navigation";
 
-export default function PaypalPayButtons({ amount }: { amount: number }) {
+export default function PaypalPayButtons({
+  amount,
+  goToInvoice = true,
+  redirectTo = "",
+  callback = () => {},
+}: {
+  amount: number;
+  goToInvoice?: boolean;
+  redirectTo?: string;
+  callback?: (data: any) => void;
+}) {
   const session = useSession();
   const user = session.data?.user;
 
@@ -74,7 +84,13 @@ export default function PaypalPayButtons({ amount }: { amount: number }) {
           title: "Amount Added to Wallet",
           description: `${amount} EUR To your Wallet your balace now is ${data.credits}EUR`,
         });
-        router.push(`/dashboard/invoices/${data.id}`);
+        callback(data);
+        if (goToInvoice) {
+          router.push(`/dashboard/invoices/${data.id}`);
+        }
+        if (redirectTo) {
+          router.push(redirectTo);
+        }
       }
     } catch (err) {
       toast({

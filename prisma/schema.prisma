@@ -27,22 +27,22 @@ model User {
 }
 
 model Server {
-  id         Int      @id @default(autoincrement())
-  userId     Int
-  type       String  @default("vps")
-  name       String?
-  ip4        String
-  ip6        String?
-  ram        Int?
-  cpu       String?
-  cores      Int?
-  storage    Int?
-  operating  String?
-  productName String? @default("custom")
-  status     String   @default("active")
-  createdAt  DateTime @default(now())
-  expiresAt  DateTime?
-  user       User     @relation(fields: [userId], references: [id])
+  id          Int       @id @default(autoincrement())
+  userId      Int
+  type        String    @default("vps")
+  name        String?
+  ip4         String
+  ip6         String?
+  ram         Int?
+  cpu         String?
+  cores       Int?
+  storage     Int?
+  operating   String?
+  productName String?   @default("custom")
+  status      String    @default("active")
+  createdAt   DateTime  @default(now())
+  expiresAt   DateTime?
+  user        User      @relation(fields: [userId], references: [id])
 }
 
 model Product {
@@ -51,7 +51,7 @@ model Product {
   description String?
   features    String[]
   price       Int
-  type       String   @default("vps")
+  type        String   @default("vps")
   cpu         String?
   cores       Int?
   ram         Int?
@@ -62,24 +62,24 @@ model Product {
 }
 
 model Order {
-  id         Int      @id @default(autoincrement())
-  userId     Int
-  productId  Int
-  status     String   @default("pending")
-  createdAt  DateTime @default(now())
-  expiresAt  DateTime
-  user       User     @relation(fields: [userId], references: [id])
-  product    Product  @relation(fields: [productId], references: [id])
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  productId Int
+  status    String   @default("pending")
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+  user      User     @relation(fields: [userId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
 }
 
 model Inovice {
-  id         Int      @id @default(autoincrement())
-  amount     Int
-  userId     Int
-  paymentId  String   @unique
-  description String?
+  id            Int      @id @default(autoincrement())
+  amount        Int
+  userId        Int
+  paymentId     String?  @unique
+  description   String?
   paymentMethod String?
-  status     String   @default("pending")
-  createdAt  DateTime @default(now())
-  user      User     @relation(fields: [userId], references: [id])
+  status        String   @default("pending")
+  createdAt     DateTime @default(now())
+  user          User     @relation(fields: [userId], references: [id])
 }

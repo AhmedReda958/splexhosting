@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import Link from "next/link";
 import { FaDiscord } from "react-icons/fa";
 import { Mail } from "lucide-react";
@@ -7,7 +7,7 @@ import { navLinks } from "./navbar";
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-800 text-white py-12">
+    <footer className=" bg-gray-800 text-white py-12">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
@@ -24,15 +24,15 @@ const Footer = () => {
             <h3 className="text-xl font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2">
               <li>
-{navLinks.map((link)=>
- <Link
- key={link.title}
- href={link.href}
- className="text-gray-400 hover:text-white transition-colors block"
->
- {link.title}
-</Link>
-)               }
+                {navLinks.map((link) => (
+                  <Link
+                    key={link.title}
+                    href={link.href}
+                    className="text-gray-400 hover:text-white transition-colors block"
+                  >
+                    {link.title}
+                  </Link>
+                ))}
               </li>
             </ul>
           </div>

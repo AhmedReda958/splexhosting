@@ -55,10 +55,14 @@ export default async function Products() {
         </TabsContent>
         <TabsContent value="dedicated">
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {products
+            {products
               .filter((product) => product.type == "dedicated")
               .map((product) => (
-                <ProductCard key={product.id} product={product} type="Dedicated" />
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  type="Dedicated"
+                />
               ))}
           </div>
         </TabsContent>
@@ -78,7 +82,13 @@ export default async function Products() {
   );
 }
 
-function ProductCard({ product, type }: { product: Product; type: string }) {
+export function ProductCard({
+  product,
+  type,
+}: {
+  product: Product;
+  type: string;
+}) {
   return (
     <Card>
       <CardHeader>
@@ -100,7 +110,11 @@ function ProductCard({ product, type }: { product: Product; type: string }) {
         </ul>
       </CardContent>
       <CardFooter>
-        <Button className="w-full">Choose {type}</Button>
+        <Button className="w-full" asChild>
+          <Link href={`/complete-server-order?productId=${product.id}`}>
+            Choose {type}
+          </Link>
+        </Button>
       </CardFooter>
     </Card>
   );
