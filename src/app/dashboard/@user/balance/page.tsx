@@ -10,7 +10,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { CreditCard, Euro } from "lucide-react";
+import { Wallet, Euro } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import PaypalPayButtons from "@/components/PaypalPayButtons";
 
@@ -40,7 +40,7 @@ export default function BalancePage() {
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex items-center space-x-4 p-4 bg-secondary rounded-lg">
-            <CreditCard className="h-6 w-6 text-primary" />
+            <Wallet className="h-6 w-6 text-primary" />
             <div>
               <p className="text-sm font-medium">Current Balance</p>
               <p className="text-2xl font-bold flex gap-1 items-center">
