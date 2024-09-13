@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, use } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,19 +12,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Check, CreditCard, Lock, Server, User } from "lucide-react";
+
+import { Check, Lock, User } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Product } from "@prisma/client";
-import { ProductCard } from "@/app/components/products";
 import { Badge } from "@/components/ui/badge";
 import { useSession } from "next-auth/react";
 import PaypalPayButtons from "@/components/PaypalPayButtons";
@@ -36,14 +27,17 @@ const steps = [
   { number: 4, title: "Confirmation" },
 ];
 
-export default function Component() {
+export default function Component({
+  searchParams,
+}: {
+  searchParams: { productId: string };
+}) {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const [productData, setProductData] = useState<Product | null>(null);
   const [step, setStep] = useState(0);
   const [paymentMethod, setPaymentMethod] = useState("credit-card");
 
-  const productId = searchParams.get("productId");
+  const productId = searchParams.productId;
   const session = useSession();
   const user = session?.data?.user;
 

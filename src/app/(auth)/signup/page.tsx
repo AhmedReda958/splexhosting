@@ -16,7 +16,7 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-const SignUp = () => {
+const SignUp = ({ searchParams }: { searchParams: { redirect: string } }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -24,9 +24,8 @@ const SignUp = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const searchParams = useSearchParams();
 
-  const redirect = searchParams.get("redirect") || "/dashboard";
+  const redirect = searchParams.redirect || "/dashboard";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

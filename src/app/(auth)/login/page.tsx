@@ -17,15 +17,14 @@ import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 
-const SignIn = () => {
+const SignIn = ({ searchParams }: { searchParams: { redirect: string } }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const searchParams = useSearchParams();
 
-  const redirect = searchParams.get("redirect") || "/dashboard";
+  const redirect = searchParams.redirect || "/dashboard";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
