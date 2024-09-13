@@ -254,12 +254,6 @@ const PayStep = ({
     getCreditBalance();
   }, [getCreditBalance]);
 
-  useEffect(() => {
-    if (credits < price) {
-      setShowPaypal(true);
-    }
-  }, [credits, price]);
-
   const handleProductOrder = useCallback(() => {
     if (credits >= price) {
       fetch(`/api/products/new-order/${productId}`, {
@@ -295,6 +289,17 @@ const PayStep = ({
   return (
     <div className="space-y-4">
       <h2>Your Balance: {credits} EUR</h2>
+      {credits < price && (
+        <div className="">
+          <p className="text-red-500">
+            You don&apos;t have enough balance to pay for this product.
+          </p>
+          <Button onClick={() => setShowPaypal(true)} variant="outline">
+            Charge your Wallet with {price} EUR
+          </Button>
+        </div>
+      )}
+
       {showPaypal && (
         <div>
           <h2>Charge Your Wallet with Paypal</h2>
