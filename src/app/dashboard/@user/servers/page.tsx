@@ -61,7 +61,7 @@ const Servers = async () => {
 
         {/* add new server */}
         <Link
-          href="https://splexhosting.com/shrefre/vps-hosting"
+          href="/dashboard/products"
           className="p-4 h-28  rounded-lg flex items-center justify-center border-2 border-dashed border-textColor dark:border-gray-700"
         >
           <FaPlus className="w-6 h-6 " />

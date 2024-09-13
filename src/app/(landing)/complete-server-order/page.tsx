@@ -297,7 +297,7 @@ const PayStep = ({
       <h2>Your Balance: {credits} EUR</h2>
       {showPaypal && (
         <div>
-          <h2>Pay with Paypal</h2>
+          <h2>Charge Your Wallet with Paypal</h2>
           <PaypalPayButtons
             amount={price}
             goToInvoice={false}

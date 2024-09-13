@@ -65,6 +65,7 @@ model Order {
   id        Int      @id @default(autoincrement())
   userId    Int
   productId Int
+  serverId  Int?
   status    String   @default("pending")
   createdAt DateTime @default(now())
   expiresAt DateTime

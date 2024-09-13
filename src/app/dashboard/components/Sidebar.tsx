@@ -10,6 +10,7 @@ import {
   LuServer,
   LuSettings,
   LuUsers2,
+  LuListChecks,
 } from "react-icons/lu";
 import { LiaFileInvoiceDollarSolid } from "react-icons/lia";
 import {
@@ -49,6 +50,13 @@ export const sidebarItems: SidebarItem[] = [
     icon: LuUsers2,
     name: "Users",
     href: "/dashboard/users",
+    role: "admin",
+    position: "top",
+  },
+  {
+    icon: LuListChecks,
+    name: "Orders",
+    href: "/dashboard/orders",
     role: "admin",
     position: "top",
   },

@@ -41,7 +41,7 @@ export async function POST(
       },
     });
 
-    await prisma.server.create({
+    const server = await prisma.server.create({
       data: {
         userId: user.id,
         ip4: "",
@@ -59,6 +59,8 @@ export async function POST(
       data: {
         productId: product.id,
         userId: user.id,
+        serverId: server.id,
+
         expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30), // 30 days
       },
     });
