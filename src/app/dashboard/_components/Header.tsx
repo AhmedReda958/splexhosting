@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import React from "react";
+import React, { use, useCallback, useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import {
   LuHome,
@@ -36,9 +36,12 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { usePathname } from "next/navigation";
 import DarkModeToggle from "@/components/DarkModeToggle";
 import { signOut } from "next-auth/react";
-import { LogOutIcon, User2Icon } from "lucide-react";
+import { Euro, LogOutIcon, User2Icon } from "lucide-react";
+import { sidebarItems } from "./Sidebar";
 
 const Header = () => {
+  const [credits, setCredits] = useState(0);
+
   const pathname = usePathname();
 
   const session = useSession();
@@ -49,6 +52,16 @@ const Header = () => {
       callbackUrl: "/", // Redirect to homepage or any other page after sign out
     });
   };
+
+  const getCreditBalance = useCallback(() => {
+    fetch("/api/user/credits")
+      .then((res) => res.json())
+      .then((data) => setCredits(data.credits));
+  }, []);
+
+  useEffect(() => {
+    getCreditBalance();
+  }, [getCreditBalance]);
 
   return (
     <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
@@ -61,72 +74,43 @@ const Header = () => {
         </SheetTrigger>
         <SheetContent side="left" className="sm:max-w-xs">
           <nav className="grid gap-6 text-lg font-medium">
-            <Link
-              href="#"
-              className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base"
-            >
-              <LuPackage2 className="h-5 w-5 transition-all group-hover:scale-110" />
-              <span className="sr-only">Acme Inc</span>
+            <Link href="#" className="flex items-center gap-2 pt-3">
+              <Image
+                src="/favicon.ico"
+                width={32}
+                height={32}
+                alt="VenixHosting"
+              />
+              VenixHosting
             </Link>
-            <Link
-              href="/dashboard"
-              className={`flex items-center gap-4 px-2.5  hover:text-foreground ${
-                pathname === "/dashboard"
-                  ? "text-foreground"
-                  : "text-muted-foreground"
-              }`}
-            >
-              <LuHome className="h-5 w-5" />
-              Dashboard
-            </Link>
-            <Link
-              href="/dashboard/servers"
-              className={`flex items-center gap-4 px-2.5 hover:text-foreground ${
-                pathname === "/dashboard/servers"
-                  ? "text-foreground"
-                  : "text-muted-foreground"
-              }`}
-            >
-              <LuServer className="h-5 w-5" />
-              Servers
-            </Link>
-            <Link
-              href="/dashboard/products"
-              className={`flex items-center gap-4 px-2.5  hover:text-foreground ${
-                pathname === "/dashboard/products"
-                  ? "text-foreground"
-                  : "text-muted-foreground"
-              }`}
-            >
-              <LuPackage className="h-5 w-5" />
-              Products
-            </Link>
-            <Link
-              href="/dashboard/customers"
-              className={`flex items-center gap-4 px-2.5  hover:text-foreground ${
-                pathname === "/dashboard/customers"
-                  ? "text-foreground"
-                  : "text-muted-foreground"
-              }`}
-            >
-              <LuUsers2 className="h-5 w-5" />
-              Customers
-            </Link>
-            <Link
-              href="/dashboard/settings"
-              className={`flex items-center gap-4 px-2.5  hover:text-foreground ${
-                pathname === "/dashboard/settings"
-                  ? "text-foreground"
-                  : "text-muted-foreground"
-              }`}
-            >
-              <LuLineChart className="h-5 w-5" />
-              Settings
-            </Link>
+
+            {sidebarItems
+              .filter((item) => item.position === "top")
+              .map((item) => {
+                if (
+                  session.data?.user.role == item.role ||
+                  item.role === "all"
+                ) {
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className={`flex items-center gap-4 px-2.5  hover:text-foreground ${
+                        pathname === "/dashboard"
+                          ? "text-foreground"
+                          : "text-muted-foreground"
+                      }`}
+                    >
+                      <item.icon className="h-5 w-5" />
+                      {item.name}
+                    </Link>
+                  );
+                }
+              })}
           </nav>
         </SheetContent>
       </Sheet>
-      <Breadcrumb className="hidden md:flex">
+      {/* <Breadcrumb className="hidden md:flex">
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
@@ -138,14 +122,13 @@ const Header = () => {
             <BreadcrumbPage>Server</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
-      </Breadcrumb>
-      <div className="relative ml-auto flex-1 md:grow-0">
-        <LuSearch className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-        <Input
-          type="Search"
-          placeholder="Search..."
-          className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]"
-        />
+      </Breadcrumb> */}
+      <div className="flex-1 flex items-end">
+        {user?.role == "user" && (
+          <Link href="/dashboard/balance" className="flex gap-1">
+            Balance: {credits} <Euro />
+          </Link>
+        )}
       </div>
       <DarkModeToggle />
       <DropdownMenu>

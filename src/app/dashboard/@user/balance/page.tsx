@@ -10,13 +10,24 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { CreditCard, DollarSign } from "lucide-react";
-import { useState } from "react";
+import { CreditCard, Euro } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
 import PaypalPayButtons from "@/components/PaypalPayButtons";
 
 export default function BalancePage() {
   const [amount, setAmount] = useState(20);
   const [showPaypal, setShowPaypal] = useState(false);
+  const [credits, setCredits] = useState(0);
+
+  const getCreditBalance = useCallback(() => {
+    fetch("/api/user/credits")
+      .then((res) => res.json())
+      .then((data) => setCredits(data.credits));
+  }, []);
+
+  useEffect(() => {
+    getCreditBalance();
+  }, [getCreditBalance]);
 
   return (
     <div className="col-span-full">
@@ -32,14 +43,16 @@ export default function BalancePage() {
             <CreditCard className="h-6 w-6 text-primary" />
             <div>
               <p className="text-sm font-medium">Current Balance</p>
-              <p className="text-2xl font-bold">100 credits</p>
+              <p className="text-2xl font-bold flex gap-1 items-center">
+                {credits} <Euro />
+              </p>
             </div>
           </div>
           <div className="space-y-2">
             <Label htmlFor="amount">Amount to add {amount} EUR</Label>
             {!showPaypal ? (
               <div className="relative">
-                <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" />
+                <Euro className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" />
                 <Input
                   id="amount"
                   type="number"

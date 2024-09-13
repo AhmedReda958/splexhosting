@@ -310,7 +310,7 @@ const PayStep = ({
           Back
         </Button>
         <Button onClick={handleProductOrder} disabled={price > credits}>
-          Pay ${price.toFixed(2)}
+          Pay {price.toFixed(2)} EUR
         </Button>
       </div>
     </div>

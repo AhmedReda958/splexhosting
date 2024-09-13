@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import {
+  LuWallet2,
   LuHome,
   LuLineChart,
   LuPackage,
@@ -29,7 +30,7 @@ type SidebarItem = {
   position: string;
 };
 
-const sidebarItems: SidebarItem[] = [
+export const sidebarItems: SidebarItem[] = [
   {
     icon: LuHome,
     name: "Dashboard",
@@ -73,19 +74,26 @@ const sidebarItems: SidebarItem[] = [
     position: "top",
   },
   {
+    icon: LuWallet2,
+    name: "Balance",
+    href: "/dashboard/balance",
+    role: "user",
+    position: "top",
+  },
+  {
     icon: BiSupport,
     name: "Support",
     href: "https://discord.com/channels/1279394173635657801/1279399742094442569",
     role: "user",
     position: "bottom",
   },
-  {
-    icon: LuSettings,
-    name: "Settings",
-    href: "/dashboard/settings",
-    role: "all",
-    position: "bottom",
-  },
+  // {
+  //   icon: LuSettings,
+  //   name: "Settings",
+  //   href: "/dashboard/settings",
+  //   role: "all",
+  //   position: "bottom",
+  // },
 ];
 
 const SidebarItem = ({ item }: { item: SidebarItem }) => {
