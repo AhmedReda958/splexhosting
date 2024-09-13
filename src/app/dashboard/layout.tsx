@@ -1,5 +1,5 @@
-import Header from "./_components/Header";
-import Sidebar from "./_components/Sidebar";
+import Header from "./components/Header";
+import Sidebar from "./components/Sidebar";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
