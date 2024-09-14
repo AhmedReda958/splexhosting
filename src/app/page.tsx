@@ -69,21 +69,21 @@ export default function LandingPage() {
             {[
               {
                 icon: <Zap className="h-8 w-8 text-primary" />,
-                title: "Lightning Fast",
+                title: "Self-developed Webinterface",
                 description:
-                  "Experience unparalleled speed with our optimized infrastructure.",
+                  "Manage all your services in our self-developed web interface.",
               },
               {
                 icon: <Shield className="h-8 w-8 text-primary" />,
-                title: "Robust Security",
+                title: "Strong connectivity",
                 description:
-                  "Advanced security measures to keep your data safe and secure.",
+                  "VenixHosting's network is internally redundant and offers sufficient capacity for your projects.",
               },
               {
                 icon: <Clock className="h-8 w-8 text-primary" />,
-                title: "24/7 Support",
+                title: "Several Payment Methods",
                 description:
-                  "Our expert team is always available to assist you.",
+                  "There are several payment methods available to charge your balance: PayPal, Paysafecard, Sofort, Giropay, Creditcard",
               },
               {
                 icon: <Server className="h-8 w-8 text-primary" />,
@@ -127,15 +127,15 @@ export default function LandingPage() {
               },
               {
                 icon: <Zap className="h-8 w-8 text-primary" />,
-                title: "High Performance",
+                title: "High quality hardware",
                 description:
-                  "Cutting-edge hardware ensures blazing-fast performance.",
+                  "VenixHosting exclusively uses hardware of renowned brand manufacturers (Intel, AMD, Juniper, Arista, ...).",
               },
               {
                 icon: <Shield className="h-8 w-8 text-primary" />,
-                title: "Advanced Security",
+                title: "DDoS Protection",
                 description:
-                  "Multi-layered security approach to protect your data.",
+                  "We rely on parallel operation of the protection solution from Arbor Networks and the protection from combahton - talk to us about it, we'll be happy to advise you!",
               },
               {
                 icon: <Server className="h-8 w-8 text-primary" />,
@@ -149,8 +149,8 @@ export default function LandingPage() {
               },
               {
                 icon: <CheckCircle className="h-8 w-8 text-primary" />,
-                title: "1-Day Money-Back",
-                description: "Try our services risk-free with our guarantee.",
+                title: "100% Prepaid",
+                description: "All our services run on a prepaid basis and without contract periods. All without hidden fees.",
               },
             ].map((reason, index) => (
               <Card key={index}>

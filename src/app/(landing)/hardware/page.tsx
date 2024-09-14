@@ -34,7 +34,7 @@ export default function HardwarePage() {
               <ul className="list-disc pl-5 space-y-2">
                 <li>NVMe SSD storage for maximum speed</li>
                 <li>RAID 10 configuration for data redundancy</li>
-                <li>Up to 4TB storage per VPS</li>
+                <li>Up to 4TB storage per Server</li>
               </ul>
             </CardContent>
           </Card>
