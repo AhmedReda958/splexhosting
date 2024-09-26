@@ -57,7 +57,7 @@ export async function POST(req: Request) {
   } catch (err) {
     console.log("Err at Create Order: ", err);
     return NextResponse.json(
-      { success: false, message: "Could Not Find the user" },
+      { success: false, message: "Error Creating Order", error: err },
       { status: 500 }
     );
   }

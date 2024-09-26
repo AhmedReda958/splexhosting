@@ -103,7 +103,8 @@ export default function PaypalPayButtons({
   };
 
   return (
-    <PayPalButtons
+    <>
+      {/* <PayPalButtons
       style={{
         color: "gold",
         shape: "rect",
@@ -115,6 +116,10 @@ export default function PaypalPayButtons({
         return order_id + "";
       }}
       onApprove={paypalCaptureOrder}
-    />
+    /> */}
+      <h3 className="text-2xl text-orange-400">
+        Paypal Payment is disabled for now contact support for more information
+      </h3>
+    </>
   );
 }
