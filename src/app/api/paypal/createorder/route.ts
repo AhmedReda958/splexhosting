@@ -1,6 +1,4 @@
 import { NextResponse } from "next/server";
-import client from "@/utils/paypal";
-import paypal from "@paypal/checkout-server-sdk";
 import prisma from "@/lib/prisma";
 
 export async function POST(req: Request) {
@@ -15,45 +13,28 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     }
-    const PaypalClient = client();
-    const request = new paypal.orders.OrdersCreateRequest();
-    request.headers["Prefer"] = "return=representation";
-    request.requestBody({
-      intent: "CAPTURE",
-      purchase_units: [
-        {
-          amount: {
-            currency_code: "EUR",
-            value: amount.toString(),
-          },
-        },
-      ],
-    });
 
-    const response = await PaypalClient.execute(request);
+    const referenceId = userId.toString().concat("-", Date.now().toString());
 
-    if (response.statusCode !== 201) {
-      console.log("RES: ", response);
+    const order = await createOrder(amount, referenceId);
+    if (order.error) {
+      console.log("Error Creating Order: ", order.error);
       return NextResponse.json(
-        { success: false, message: "Some Error Occurred at backend" },
+        { success: false, message: "Error Creating Order" },
         { status: 500 }
       );
     }
-
-    const order = await prisma.inovice.create({
+    const invoice = await prisma.inovice.create({
       data: {
         userId: Number(userId),
-        paymentId: response.result.id,
+        paymentId: referenceId,
         amount: amount,
         description: `Charge Credits balance with ${amount}EUR`,
         paymentMethod: "paypal",
       },
     });
 
-    return NextResponse.json(
-      { success: true, data: { order } },
-      { status: 201 }
-    );
+    return NextResponse.json(order, { status: 201 });
   } catch (err) {
     console.log("Err at Create Order: ", err);
     return NextResponse.json(
@@ -61,4 +42,45 @@ export async function POST(req: Request) {
       { status: 500 }
     );
   }
+}
+
+function createOrder(amount: number, referenceId: string) {
+  const accessToken = Buffer.from(
+    process.env.PAYPAL_CLIENT_ID + ":" + process.env.PAYPAL_CLIENT_SECRET
+  ).toString("base64");
+  console.log("Access Token: ", accessToken);
+  return fetch("https://api-m.sandbox.paypal.com/v2/checkout/orders", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Basic ${accessToken}`,
+    },
+    body: JSON.stringify({
+      purchase_units: [
+        {
+          amount: {
+            currency_code: "EUR",
+            value: amount.toString(),
+          },
+          reference_id: referenceId,
+        },
+      ],
+      intent: "CAPTURE",
+      payment_source: {
+        paypal: {
+          experience_context: {
+            payment_method_preference: "IMMEDIATE_PAYMENT_REQUIRED",
+            payment_method_selected: "PAYPAL",
+            brand_name: "VenixHosting",
+            locale: "en-US",
+            landing_page: "LOGIN",
+            shipping_preference: "GET_FROM_FILE",
+            user_action: "PAY_NOW",
+            return_url: "https://example.com/returnUrl",
+            cancel_url: "https://example.com/cancelUrl",
+          },
+        },
+      },
+    }),
+  }).then((response) => response.json());
 }
