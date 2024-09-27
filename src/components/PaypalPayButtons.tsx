@@ -2,12 +2,11 @@
 
 import { useToast } from "@/hooks/use-toast";
 import {
-  PayPalScriptProvider,
   PayPalButtons,
   PayPalButtonsComponentProps,
 } from "@paypal/react-paypal-js";
 import { useSession } from "next-auth/react";
-import { useEffect, useCallback, use } from "react";
+
 import { useRouter } from "next/navigation";
 
 export default function PaypalPayButtons({
@@ -57,85 +56,6 @@ export default function PaypalPayButtons({
     }
   };
 
-  const paypalCreateOrder = useCallback(async () => {
-    try {
-      const response = await fetch("/api/paypal/createorder", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          userId: user.id,
-          amount,
-        }),
-      });
-
-      if (!response.ok) {
-        // Handle HTTP errors
-        const errorData = await response.json();
-        console.error("Error:", errorData.message);
-
-        toast({ title: "Some Error Occured", variant: "destructive" });
-        return null;
-      }
-
-      const data = await response.json();
-      return data.data.order.paymentId;
-    } catch (err) {
-      toast({ title: "Some Error Occured", variant: "destructive" });
-
-      console.error("Fetch Error:", err);
-      return null;
-    }
-  }, [amount, toast, user]);
-
-  const paypalCaptureOrder = async ({ orderID }: { orderID: string }) => {
-    try {
-      const response = await fetch("/api/paypal/captureorder", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ orderID }),
-      });
-
-      if (!response.ok) {
-        // Handle HTTP errors
-        const errorData = await response.json();
-        console.error("Error:", errorData.message);
-        toast({
-          title: "Some Error Occured",
-          description: errorData.message,
-          variant: "destructive",
-        });
-        return;
-      }
-      const data = await response.json();
-
-      if (data.success) {
-        // Order is successful
-        toast({
-          title: "Amount Added to Wallet",
-          description: `${amount} EUR To your Wallet your balace now is ${data.credits}EUR`,
-        });
-        callback(data);
-        if (goToInvoice) {
-          router.push(`/dashboard/invoices/${data.id}`);
-        }
-        if (redirectTo) {
-          router.push(redirectTo);
-        }
-      }
-    } catch (err) {
-      toast({
-        title: "Some Error Occured",
-        description: err as string,
-        variant: "destructive",
-      });
-      console.error("Fetch Error:", err);
-    }
-  };
-
   const onApprove: PayPalButtonsComponentProps["onApprove"] = async (data) => {
     // Capture the funds from the transaction.
     const response = await fetch("/api/paypal/captureorder", {
@@ -147,8 +67,44 @@ export default function PaypalPayButtons({
 
     const details = await response.json();
 
-    // Show success message to buyer
-    alert(`Transaction completed by ${details.payer.name.given_name}`);
+    toast({
+      title: "Amount Added to Wallet",
+      description: `${amount} EUR To your Wallet your balace now is ${details.credits}EUR`,
+    });
+    callback(data);
+    if (goToInvoice) {
+      router.push(`/dashboard/invoices/${details.id}`);
+    }
+    if (redirectTo) {
+      router.push(redirectTo);
+    }
+  };
+
+  const onError: PayPalButtonsComponentProps["onError"] = async (data) => {
+    const response = await fetch("/api/paypal/error", {
+      method: "PUT",
+      body: JSON.stringify({
+        orderID: data.orderID,
+      }),
+    });
+    toast({
+      title: "Operation Failed",
+      description: "Transaction Failed, Please try again",
+      variant: "destructive",
+    });
+  };
+  const onCancel: PayPalButtonsComponentProps["onCancel"] = async (data) => {
+    const response = await fetch("/api/paypal/cancelorder", {
+      method: "PUT",
+      body: JSON.stringify({
+        orderID: data.orderID,
+      }),
+    });
+    toast({
+      title: "Operation Canceled",
+      description: "Transaction Canceled",
+      variant: "destructive",
+    });
   };
 
   return (
@@ -162,6 +118,8 @@ export default function PaypalPayButtons({
         }}
         createOrder={createOrder}
         onApprove={onApprove}
+        onError={onError}
+        onCancel={onCancel}
       />
       {/* <h3 className="text-2xl text-orange-400">
         Paypal Payment is disabled for now contact support for more information

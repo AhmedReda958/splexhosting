@@ -34,24 +34,6 @@ export async function POST(req: Request) {
       { status: 201 }
     );
   } catch (err) {
-    const cancledOrder = await prisma.inovice.update({
-      where: { paymentId: orderID },
-      data: {
-        status: "failed",
-      },
-    });
-
-    if ((err as any).statusCode === 422) {
-      console.log("Compliance Violation Error:", err);
-      return NextResponse.json(
-        {
-          success: false,
-          message:
-            "Transaction cannot be processed due to a compliance violation. Please contact customer support.",
-        },
-        { status: 422 }
-      );
-    }
     console.log("Error at Capture Order:", err);
     return NextResponse.json(
       { success: false, message: "Could Not Process the Order" },
