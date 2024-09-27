@@ -1,36 +1,10 @@
 import { NextResponse } from "next/server";
-import client from "@/utils/paypal";
-import paypal from "@paypal/checkout-server-sdk";
+
 import prisma from "@/lib/prisma";
 
 export async function POST(req: Request) {
   const { orderID } = await req.json();
   try {
-    if (!orderID) {
-      return NextResponse.json(
-        { success: false, message: "Please Provide Order ID" },
-        { status: 400 }
-      );
-    }
-
-    // Capture order to complete payment
-    const PaypalClient = client();
-    const request = new paypal.orders.OrdersGetRequest(orderID);
-    const response = await PaypalClient.execute(request);
-
-    if (!response) {
-      console.log("Response:", response);
-      const cancledOrder = await prisma.inovice.update({
-        where: { paymentId: orderID },
-        data: {
-          status: "failed",
-        },
-      });
-      return NextResponse.json(
-        { success: false, message: "Some Error Occurred at backend" },
-        { status: 500 }
-      );
-    }
     const order = await prisma.inovice.update({
       where: { paymentId: orderID },
       data: {

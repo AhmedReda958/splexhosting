@@ -27,7 +27,7 @@ export async function POST(req: Request) {
     const invoice = await prisma.inovice.create({
       data: {
         userId: Number(userId),
-        paymentId: referenceId,
+        paymentId: order.id,
         amount: amount,
         description: `Charge Credits balance with ${amount}EUR`,
         paymentMethod: "paypal",
