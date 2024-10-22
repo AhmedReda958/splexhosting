@@ -7,14 +7,13 @@ import {
   Clock,
   Star,
   CheckCircle,
-  Scroll,
-  ScrollIcon,
-  Mail,
 } from "lucide-react";
+import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { BoxReveal } from "@/components/ui/box-reveal";
+import AnimatedGridPattern from "@/components/ui/animated-grid-pattern";
 import Navbar from "./components/navbar";
 import Products from "./components/products";
 import FAQs from "./components/FAQs";
@@ -30,19 +29,25 @@ export default function LandingPage() {
       <section className="pt-20 pb-20 px-4">
         <div className="container mx-auto flex flex-col md:flex-row items-center">
           <div className="md:w-1/2 mb-8 md:mb-0">
-            <h1 className="text-4xl md:text-4xl font-bold  mb-4 ">
-              Powerful VPS and Dedicated Servers
-            </h1>
-            <p className="text-xl mb-10 text-muted-foreground">
-              Experience lightning-fast performance and unmatched reliability
-              for your applications.
-            </p>
-            <Link href={"/signup"}>
-              <Button size="lg" className="flex items-center">
-                Get Server Now
-                <ChevronRight className="ml-2" />
-              </Button>
-            </Link>
+            <BoxReveal boxColor={"#5046e6"} duration={0.5}>
+              <h1 className="text-4xl md:text-4xl font-bold  mb-4 ">
+                Powerful VPS and Dedicated Servers
+              </h1>
+            </BoxReveal>
+            <BoxReveal boxColor={"#5046e6"} duration={0.5}>
+              <p className="text-xl mb-10 text-muted-foreground">
+                Experience lightning-fast performance and unmatched reliability
+                for your applications.
+              </p>
+            </BoxReveal>
+            <BoxReveal boxColor={"#5046e6"} duration={0.5}>
+              <Link href={"/signup"}>
+                <Button size="lg" className="flex items-center">
+                  Get Server Now
+                  <ChevronRight className="ml-2" />
+                </Button>
+              </Link>
+            </BoxReveal>
           </div>
           <div className="md:w-1/2">
             <Image
@@ -110,7 +115,7 @@ export default function LandingPage() {
       <section id="#products">
         <Products />
       </section>
-      
+
       {/* Why Choose Us Section */}
       <section className="py-20">
         <div className="container mx-auto px-4">
@@ -150,7 +155,8 @@ export default function LandingPage() {
               {
                 icon: <CheckCircle className="h-8 w-8 text-primary" />,
                 title: "100% Prepaid",
-                description: "All our services run on a prepaid basis and without contract periods. All without hidden fees.",
+                description:
+                  "All our services run on a prepaid basis and without contract periods. All without hidden fees.",
               },
             ].map((reason, index) => (
               <Card key={index}>
@@ -170,8 +176,19 @@ export default function LandingPage() {
       </section>
 
       {/* Call-to-Action Section */}
-      <section className="py-20 bg-primary">
-        <div className="container mx-auto px-4 text-center">
+      <section className="py-20 bg-primary relative overflow-hidden h-[300px]">
+        <AnimatedGridPattern
+          numSquares={30}
+          maxOpacity={0.3}
+          duration={1}
+          repeatDelay={1}
+          className={cn(
+            "[mask-image:radial-gradient(500px_circle_at_center,white,black)]",
+            "inset-x-0 inset-y-[-30%] h-[200%] skew-y-12 z-0"
+          )}
+        />
+
+        <div className="container mx-auto px-4 text-center absolute z-10">
           <h2 className="text-3xl font-bold text-white mb-4">
             Ready to Get Started?
           </h2>
@@ -179,11 +196,11 @@ export default function LandingPage() {
             Experience the power of VenixHosting&#39;s VPS and dedicated servers
             today!
           </p>
-		  <Link href={"/signup"}>
-          <Button variant="secondary" size="lg">
-            Sign Up Now
-          </Button>
-		 </Link>
+          <Link href={"/signup"}>
+            <Button variant="secondary" size="lg">
+              Sign Up Now
+            </Button>
+          </Link>
         </div>
       </section>
       {/* FAQs */}
