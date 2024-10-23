@@ -188,7 +188,7 @@ export default function LandingPage() {
           )}
         />
 
-        <div className="container mx-auto px-4 text-center absolute z-10">
+        <div className="container mx-auto px-4 text-center absolute z-10 left-1/2 -translate-x-1/2">
           <h2 className="text-3xl font-bold text-white mb-4">
             Ready to Get Started?
           </h2>

@@ -1,7 +1,5 @@
-import { useState } from "react";
-import { ChevronDown, ChevronUp, Download, Eye } from "lucide-react";
+import { Download, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
@@ -39,57 +37,63 @@ export default async function UserInvoicesPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <ul className="space-y-4">
-            {invoices.map((invoice) => (
-              <li key={invoice.id}>
-                <Card>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">
-                      Inovice ID: #{invoice.id}
-                    </CardTitle>
-                    <Badge
-                      variant={
-                        invoice.status === "success"
-                          ? "default"
-                          : invoice.status === "pending"
-                          ? "secondary"
-                          : "destructive"
-                      }
-                    >
-                      {invoice.status}
-                    </Badge>
-                  </CardHeader>
-                  <CardContent>
-                    <div
-                      className={`text-2xl font-bold ${
-                        invoice.amount < 0 ? "text-red-400" : "text-green-400"
-                      }`}
-                    >
-                      {invoice.amount.toFixed(2)} EUR
-                    </div>
-                    <p className="text-xs text-muted-foreground">
-                      {invoice.description}
-                    </p>
-                  </CardContent>
-                  <CardFooter className="flex justify-between">
-                    <div className="text-sm text-muted-foreground">
-                      {invoice.createdAt.toDateString()}
-                    </div>
-                    <div className="flex space-x-2">
-                      <Button size="sm" variant="outline">
-                        <Eye className="mr-2 h-4 w-4" />
-                        View
-                      </Button>
-                      <Button size="sm" variant="outline">
-                        <Download className="mr-2 h-4 w-4" />
-                        Download
-                      </Button>
-                    </div>
-                  </CardFooter>
-                </Card>
-              </li>
-            ))}
-          </ul>
+          {invoices.length > 0 ? (
+            <ul className="space-y-4">
+              {invoices.map((invoice) => (
+                <li key={invoice.id}>
+                  <Card>
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                      <CardTitle className="text-sm font-medium">
+                        Invoice ID: #{invoice.id}
+                      </CardTitle>
+                      <Badge
+                        variant={
+                          invoice.status === "success"
+                            ? "default"
+                            : invoice.status === "pending"
+                            ? "secondary"
+                            : "destructive"
+                        }
+                      >
+                        {invoice.status}
+                      </Badge>
+                    </CardHeader>
+                    <CardContent>
+                      <div
+                        className={`text-2xl font-bold ${
+                          invoice.amount < 0 ? "text-red-400" : "text-green-400"
+                        }`}
+                      >
+                        {invoice.amount.toFixed(2)} EUR
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        {invoice.description}
+                      </p>
+                    </CardContent>
+                    <CardFooter className="flex justify-between">
+                      <div className="text-sm text-muted-foreground">
+                        {invoice.createdAt.toDateString()}
+                      </div>
+                      <div className="flex space-x-2">
+                        <Button size="sm" variant="outline">
+                          <Eye className="mr-2 h-4 w-4" />
+                          View
+                        </Button>
+                        <Button size="sm" variant="outline">
+                          <Download className="mr-2 h-4 w-4" />
+                          Download
+                        </Button>
+                      </div>
+                    </CardFooter>
+                  </Card>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div className="text-center text-muted-foreground">
+              No invoices found.
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>
